@@ -33,6 +33,9 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * 数据库表中列的辅助工具类
+ */
 public class ColumnUtils {
 
     private ColumnUtils() {
@@ -58,10 +61,21 @@ public class ColumnUtils {
         DB_PRIMITIVE_TYPES.add(byte[].class.getName());
     }
 
+    /**
+     * 判断是否为数据库原始数据类型
+     * @param fieldType 实体类属性类型{@link java.lang.Class}
+     * @return 是否为数据库原始数据类型
+     */
     public static boolean isDbPrimitiveType(Class<?> fieldType) {
         return DB_PRIMITIVE_TYPES.contains(fieldType.getName());
     }
 
+    /**
+     * 根据实体类属性，获取对应的GET方法
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return GET方法{@link java.lang.reflect.Method}
+     */
     public static Method getColumnGetMethod(Class<?> entityType, Field field) {
         String fieldName = field.getName();
         Method getMethod = null;
@@ -82,7 +96,12 @@ public class ColumnUtils {
         }
         return getMethod;
     }
-
+    /**
+     * 根据实体类属性，获取对应的SET方法
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return SET方法{@link java.lang.reflect.Method}
+     */
     public static Method getColumnSetMethod(Class<?> entityType, Field field) {
         String fieldName = field.getName();
         Method setMethod = null;
@@ -104,7 +123,11 @@ public class ColumnUtils {
         return setMethod;
     }
 
-
+    /**
+     * 根据实体类属性，获取对应的数据库列名
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库列名
+     */
     public static String getColumnNameByField(Field field) {
         Column column = field.getAnnotation(Column.class);
         if (column != null && !TextUtils.isEmpty(column.column())) {
@@ -129,8 +152,12 @@ public class ColumnUtils {
         return field.getName();
     }
 
+    /**
+     * 根据实体类属性，获取对应的数据库从表关联列名
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库列名
+     */
     public static String getForeignColumnNameByField(Field field) {
-
         Foreign foreign = field.getAnnotation(Foreign.class);
         if (foreign != null) {
             return foreign.foreign();
@@ -139,6 +166,11 @@ public class ColumnUtils {
         return field.getName();
     }
 
+    /**
+     * 根据实体类属性，获取对应的数据库列的默认值
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库列的默认值
+     */
     public static String getColumnDefaultValue(Field field) {
         Column column = field.getAnnotation(Column.class);
         if (column != null && !TextUtils.isEmpty(column.defaultValue())) {
@@ -147,29 +179,55 @@ public class ColumnUtils {
         return null;
     }
 
+    /**
+     * 根据实体类属性，判断数据库操作是否忽略该属性
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库操作是否忽略该属性
+     */
     public static boolean isTransient(Field field) {
         return field.getAnnotation(Transient.class) != null;
     }
 
+    /**
+     * 根据实体类属性，判断数据库操作是否作为从表关联列
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库操作是否作为从表关联列
+     */
     public static boolean isForeign(Field field) {
         return field.getAnnotation(Foreign.class) != null;
     }
 
+    /**
+     * 根据实体类属性，判断数据库操作是否作为主表关联列
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库操作是否作为主表关联列
+     */
     public static boolean isFinder(Field field) {
         return field.getAnnotation(Finder.class) != null;
     }
 
+    /**
+     * 根据实体类属性，判断数据库操作是否作为UNIQUE约束列
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库操作是否作为UNIQUE约束列
+     */
     public static boolean isUnique(Field field) {
         return field.getAnnotation(Unique.class) != null;
     }
 
+    /**
+     * 根据实体类属性，判断数据库操作是否作为NOT NULL约束列
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return 数据库操作是否作为NOT NULL约束列
+     */
     public static boolean isNotNull(Field field) {
         return field.getAnnotation(NotNull.class) != null;
     }
 
     /**
-     * @param field
-     * @return check.value or null
+     * 根据实体类属性，获取对应的数据库列的CHECK约束值
+     * @param field 实体类属性{@link java.lang.reflect.Field}
+     * @return CHECK约束值（无约束时，返回null）
      */
     public static String getCheck(Field field) {
         Check check = field.getAnnotation(Check.class);
@@ -180,7 +238,11 @@ public class ColumnUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * 根据从表关联列，获取对应的实体类属性类型
+     * @param foreignColumn 数据库表的从表关联列的描述{@link com.lidroid.xutils.db.table.Foreign}
+     * @return 实体类属性类型{@link java.lang.Class}
+     */
     public static Class<?> getForeignEntityType(com.lidroid.xutils.db.table.Foreign foreignColumn) {
         Class<?> result = foreignColumn.getColumnField().getType();
         if (result.equals(ForeignLazyLoader.class) || result.equals(List.class)) {
@@ -189,7 +251,11 @@ public class ColumnUtils {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * 根据主表关联列，获取对应的实体类属性类型
+     * @param foreignColumn 数据库表的主表关联列的描述{@link com.lidroid.xutils.db.table.Finder}
+     * @return 实体类属性类型{@link java.lang.Class}
+     */
     public static Class<?> getFinderTargetEntityType(com.lidroid.xutils.db.table.Finder finderColumn) {
         Class<?> result = finderColumn.getColumnField().getType();
         if (result.equals(FinderLazyLoader.class) || result.equals(List.class)) {
@@ -198,12 +264,18 @@ public class ColumnUtils {
         return result;
     }
 
+    /**
+     * 转换为数据库可操作的数据
+     * @param value 原始数据（实体类属性值）
+     * @return 数据库可操作的数据
+     */
     @SuppressWarnings("unchecked")
     public static Object convert2DbColumnValueIfNeeded(final Object value) {
         Object result = value;
         if (value != null) {
             Class<?> valueType = value.getClass();
             if (!isDbPrimitiveType(valueType)) {
+                @SuppressWarnings("rawtypes")
                 ColumnConverter converter = ColumnConverterFactory.getColumnConverter(valueType);
                 if (converter != null) {
                     result = converter.fieldValue2ColumnValue(value);

@@ -19,35 +19,64 @@ import com.lidroid.xutils.db.table.ColumnUtils;
 
 import java.util.LinkedList;
 
+/**
+ * SQL语句描述
+ */
 public class SqlInfo {
 
     private String sql;
     private LinkedList<Object> bindArgs;
 
+    /**
+     * 构造SQL语句描述
+     */
     public SqlInfo() {
     }
-
+    /**
+     * 构造SQL语句描述
+     * @param sql SQL语句
+     */
     public SqlInfo(String sql) {
         this.sql = sql;
     }
-
+    /**
+     * 构造SQL语句描述
+     * @param sql SQL语句
+     * @param bindArgs SQL参数的值
+     */
     public SqlInfo(String sql, Object... bindArgs) {
         this.sql = sql;
         addBindArgs(bindArgs);
     }
 
+    /**
+     * 获取SQL语句
+     * @return SQL语句
+     */
     public String getSql() {
         return sql;
     }
 
+    /**
+     * 设置SQL语句
+     * @param sql SQL语句
+     */
     public void setSql(String sql) {
         this.sql = sql;
     }
 
+    /**
+     * 获取SQL参数的值
+     * @return SQL参数的值{@link java.util.LinkedList}（可能为null）
+     */
     public LinkedList<Object> getBindArgs() {
         return bindArgs;
     }
 
+    /**
+     * 获取SQL参数的值
+     * @return SQL参数的值（可能为null）
+     */
     public Object[] getBindArgsAsArray() {
         if (bindArgs != null) {
             return bindArgs.toArray();
@@ -55,6 +84,10 @@ public class SqlInfo {
         return null;
     }
 
+    /**
+     * 获取SQL参数的值
+     * @return SQL参数的值（可能为null）
+     */
     public String[] getBindArgsAsStrArray() {
         if (bindArgs != null) {
             String[] strings = new String[bindArgs.size()];
@@ -67,6 +100,10 @@ public class SqlInfo {
         return null;
     }
 
+    /**
+     * 添加SQL参数的值（自动转换为数据库可操作的数据）
+     * @param arg SQL参数的值（实体类属性值）
+     */
     public void addBindArg(Object arg) {
         if (bindArgs == null) {
             bindArgs = new LinkedList<Object>();
@@ -75,6 +112,10 @@ public class SqlInfo {
         bindArgs.add(ColumnUtils.convert2DbColumnValueIfNeeded(arg));
     }
 
+    /**
+     * 添加SQL参数的值（无需再处理）
+     * @param arg SQL参数的值（数据库可操作的数据）
+     */
     /* package */ void addBindArgWithoutConverter(Object arg) {
         if (bindArgs == null) {
             bindArgs = new LinkedList<Object>();
@@ -83,6 +124,10 @@ public class SqlInfo {
         bindArgs.add(arg);
     }
 
+    /**
+     * 添加SQL参数的值（自动转换为数据库可操作的数据）
+     * @param bindArgs SQL参数的值（实体类属性值）
+     */
     public void addBindArgs(Object... bindArgs) {
         if (bindArgs != null) {
             for (Object arg : bindArgs) {

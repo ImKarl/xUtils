@@ -36,42 +36,74 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * 控件IOC注入工具包
+ */
 public class ViewUtils {
 
     private ViewUtils() {
     }
 
+    /**
+     * 控件IOC注入
+     * @param view 顶级父控件{@link android.view.View}
+     */
     public static void inject(View view) {
         injectObject(view, new ViewFinder(view));
     }
-
+    /**
+     * 控件IOC注入
+     * @param activity {@link android.app.Activity}
+     */
     public static void inject(Activity activity) {
         injectObject(activity, new ViewFinder(activity));
     }
-
+    /**
+     * 控件IOC注入
+     * @param preferenceActivity {@link android.preference.PreferenceActivity}
+     */
     public static void inject(PreferenceActivity preferenceActivity) {
         injectObject(preferenceActivity, new ViewFinder(preferenceActivity));
     }
-
+    /**
+     * 控件IOC注入
+     * @param handler 需要IOC注入的对象实例
+     * @param view 顶级父控件{@link android.view.View}
+     */
     public static void inject(Object handler, View view) {
         injectObject(handler, new ViewFinder(view));
     }
-
+    /**
+     * 控件IOC注入
+     * @param handler 需要IOC注入的对象实例
+     * @param activity {@link android.app.Activity}
+     */
     public static void inject(Object handler, Activity activity) {
         injectObject(handler, new ViewFinder(activity));
     }
-
+    /**
+     * 控件IOC注入
+     * @param handler 需要IOC注入的对象实例
+     * @param preferenceGroup {@link android.preference.PreferenceGroup}
+     */
     public static void inject(Object handler, PreferenceGroup preferenceGroup) {
         injectObject(handler, new ViewFinder(preferenceGroup));
     }
-
+    /**
+     * 控件IOC注入
+     * @param handler 需要IOC注入的对象实例
+     * @param preferenceActivity {@link android.preference.PreferenceActivity}
+     */
     public static void inject(Object handler, PreferenceActivity preferenceActivity) {
         injectObject(handler, new ViewFinder(preferenceActivity));
     }
-
-    @SuppressWarnings("ConstantConditions")
+    
+    /**
+     * 控件IOC注入
+     * @param handler 需要IOC注入的对象实例
+     * @param preferenceActivity {@link android.preference.PreferenceActivity}
+     */
     private static void injectObject(Object handler, ViewFinder finder) {
-
         Class<?> handlerType = handler.getClass();
 
         // inject ContentView

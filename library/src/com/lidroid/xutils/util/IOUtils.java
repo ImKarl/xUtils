@@ -20,15 +20,25 @@ import android.database.Cursor;
 import java.io.Closeable;
 
 /**
+ * IO流处理-工具类
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-26
  * Time: 下午6:02
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class IOUtils {
 
     private IOUtils() {
     }
 
+    /**
+     * 安静地关闭
+     * @param closeable 可以关闭的数据源或目标{@link java.io.Closeable}
+     */
     public static void closeQuietly(Closeable closeable) {
         if (closeable != null) {
             try {
@@ -38,6 +48,10 @@ public class IOUtils {
         }
     }
 
+    /**
+     * 安静地关闭
+     * @param cursor 数据库游标{@link android.database.Cursor}
+     */
     public static void closeQuietly(Cursor cursor) {
         if (cursor != null) {
             try {
@@ -46,4 +60,5 @@ public class IOUtils {
             }
         }
     }
+    
 }

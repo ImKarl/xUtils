@@ -22,7 +22,11 @@ import com.lidroid.xutils.exception.DbException;
 import java.util.*;
 
 /**
- * Build "insert", "replace",，"update", "delete" and "create" sql.
+ * SQL语句生成器
+ * 
+ * <pre>
+ * 可生成："insert", "replace",，"update", "delete" and "create" sql.
+ * <pre>
  */
 public class SqlInfoBuilder {
 
@@ -30,9 +34,14 @@ public class SqlInfoBuilder {
     }
 
     //*********************************************** insert sql ***********************************************
-
+    /**
+     * 生成INSERT语句
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @return SQL语句描述（INSERT）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildInsertSqlInfo(DbUtils db, Object entity) throws DbException {
-
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
 
@@ -62,9 +71,14 @@ public class SqlInfoBuilder {
     }
 
     //*********************************************** replace sql ***********************************************
-
+    /**
+     * 生成REPLACE语句
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @return SQL语句描述（REPLACE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildReplaceSqlInfo(DbUtils db, Object entity) throws DbException {
-
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
 
@@ -98,7 +112,13 @@ public class SqlInfoBuilder {
     private static String buildDeleteSqlByTableName(String tableName) {
         return "DELETE FROM " + tableName;
     }
-
+    /**
+     * 生成DELETE语句
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @return SQL语句描述（DELETE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildDeleteSqlInfo(DbUtils db, Object entity) throws DbException {
         SqlInfo result = new SqlInfo();
 
@@ -117,7 +137,14 @@ public class SqlInfoBuilder {
 
         return result;
     }
-
+    /**
+     * 生成DELETE语句
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @param idValue 实体类主键ID的值（为null时，抛出异常{@link com.lidroid.xutils.exception.DbException}）
+     * @return SQL语句描述（DELETE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildDeleteSqlInfo(DbUtils db, Class<?> entityType, Object idValue) throws DbException {
         SqlInfo result = new SqlInfo();
 
@@ -134,7 +161,14 @@ public class SqlInfoBuilder {
 
         return result;
     }
-
+    /**
+     * 生成DELETE语句
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @return SQL语句描述（DELETE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildDeleteSqlInfo(DbUtils db, Class<?> entityType, WhereBuilder whereBuilder) throws DbException {
         Table table = Table.get(db, entityType);
         StringBuilder sb = new StringBuilder(buildDeleteSqlByTableName(table.tableName));
@@ -148,8 +182,20 @@ public class SqlInfoBuilder {
 
     //*********************************************** update sql ***********************************************
 
+    /**
+     * 生成UPDATE语句
+     * 
+     * <pre>
+     * updateColumnNames为空时，更新所有字段的值
+     * </pre>
+     * 
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @param updateColumnNames 需要更新的字段名
+     * @return SQL语句描述（UPDATE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildUpdateSqlInfo(DbUtils db, Object entity, String... updateColumnNames) throws DbException {
-
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
 
@@ -184,7 +230,20 @@ public class SqlInfoBuilder {
         result.setSql(sqlBuffer.toString());
         return result;
     }
-
+    /**
+     * 生成UPDATE语句
+     * 
+     * <pre>
+     * updateColumnNames为空时，更新所有字段的值
+     * </pre>
+     * 
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @param updateColumnNames 需要更新的字段名
+     * @return SQL语句描述（UPDATE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildUpdateSqlInfo(DbUtils db, Object entity, WhereBuilder whereBuilder, String... updateColumnNames) throws DbException {
 
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
@@ -219,7 +278,14 @@ public class SqlInfoBuilder {
     }
 
     //*********************************************** others ***********************************************
-
+    /**
+     * 生成CREATE语句
+     * 
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @return SQL语句描述（CREATE）{@link com.lidroid.xutils.db.sqlite.SqlInfo}
+     * @throws DbException 数据库操作异常
+     */
     public static SqlInfo buildCreateTableSqlInfo(DbUtils db, Class<?> entityType) throws DbException {
         Table table = Table.get(db, entityType);
         Id id = table.id;
@@ -271,8 +337,13 @@ public class SqlInfoBuilder {
         return kv;
     }
 
+    /**
+     * 根据实体类，获取数据库列值的键值集
+     * @param db DB操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param entity 实体类实例
+     * @return <数据库列名,值>的键值集
+     */
     public static List<KeyValue> entity2KeyValueList(DbUtils db, Object entity) {
-
         List<KeyValue> keyValueList = new ArrayList<KeyValue>();
 
         Class<?> entityType = entity.getClass();
@@ -298,4 +369,5 @@ public class SqlInfoBuilder {
 
         return keyValueList;
     }
+    
 }

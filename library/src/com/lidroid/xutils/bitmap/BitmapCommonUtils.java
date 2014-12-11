@@ -24,6 +24,9 @@ import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 import java.lang.reflect.Field;
 
+/**
+ * Bitmap图片处理通用工具类
+ */
 public class BitmapCommonUtils {
 
     private BitmapCommonUtils() {
@@ -31,6 +34,11 @@ public class BitmapCommonUtils {
 
     private static BitmapSize screenSize = null;
 
+    /**
+     * 获取设备屏幕尺寸（单位：px）
+     * @param context android.content.Context
+     * @return 尺寸 {@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     */
     public static BitmapSize getScreenSize(Context context) {
         if (screenSize == null) {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -39,6 +47,13 @@ public class BitmapCommonUtils {
         return screenSize;
     }
 
+    /**
+     * 根据控件{@link android.view.View}，获取最优的图片尺寸
+     * @param view 控件{@link android.view.View}
+     * @param maxImageWidth 图片最大宽度
+     * @param maxImageHeight 图片最大高度
+     * @return 最合适的图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     */
     public static BitmapSize optimizeMaxSizeByView(View view, int maxImageWidth, int maxImageHeight) {
         int width = maxImageWidth;
         int height = maxImageHeight;

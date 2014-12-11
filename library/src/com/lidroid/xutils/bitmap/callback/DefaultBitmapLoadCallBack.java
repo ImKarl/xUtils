@@ -23,6 +23,11 @@ import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 
 import java.lang.reflect.Method;
 
+/**
+ * 图片加载回调接口-默认实现
+ * @version v0.1 king 2014-12-5
+ * @param <T> 控件类型{@link android.view.View}
+ */
 public class DefaultBitmapLoadCallBack<T extends View> extends BitmapLoadCallBack<T> {
 
     @Override

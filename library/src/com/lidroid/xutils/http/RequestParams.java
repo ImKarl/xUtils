@@ -41,7 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * 网络请求参数
+ */
 public class RequestParams {
 
     private String charset = HTTP.UTF_8;
@@ -54,35 +56,66 @@ public class RequestParams {
 
     private Priority priority;
 
+    /**
+     * 构造网络请求参数
+     * 
+     * <pre>
+     * 默认编码：UTF-8
+     * </pre>
+     */
     public RequestParams() {
     }
-
+    /**
+     * 构造网络请求参数
+     * @param charset HTTP请求的字符编码（为空时，使用默认编码：UTF-8）
+     * @see java.nio.charset.Charset
+     */
     public RequestParams(String charset) {
         if (!TextUtils.isEmpty(charset)) {
             this.charset = charset;
         }
     }
-
+    
+    /**
+     * 获取线程优先级
+     * @return 线程优先级{@link com.lidroid.xutils.task.Priority}
+     */
     public Priority getPriority() {
         return priority;
     }
 
+    /**
+     * 设置线程优先级
+     * @param priority 线程优先级{@link com.lidroid.xutils.task.Priority}
+     */
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
+    /**
+     * 获取HTTP请求的字符编码
+     * @return 字符编码
+     * @see java.nio.charset.Charset
+     */
     public String getCharset() {
         return charset;
     }
 
+    /**
+     * 设置HTTP请求的内容类型Content-Type
+     * @param contentType HTTP请求的内容类型Content-Type
+     */
     public void setContentType(String contentType) {
         this.setHeader("Content-Type", contentType);
     }
 
     /**
-     * Adds a header to this message. The header will be appended to the end of the list.
-     *
-     * @param header
+     * 增加一个Header表头信息，将被附加在所有Header最后
+     * @param header HTTP请求的表头信息{@link org.apache.http.Header}
+     * @see #addHeader(String, String)
+     * @see #addHeaders(List)
+     * @see #setHeader(Header)
+     * @see org.apache.http.Header
      */
     public void addHeader(Header header) {
         if (this.headers == null) {
@@ -92,10 +125,13 @@ public class RequestParams {
     }
 
     /**
-     * Adds a header to this message. The header will be appended to the end of the list.
-     *
-     * @param name
-     * @param value
+     * 增加一个Header表头信息，将被附加在所有Header最后
+     * @param name Header的名称
+     * @param value Header的值
+     * @see #addHeader(Header)
+     * @see #addHeaders(List)
+     * @see #setHeader(String, String)
+     * @see org.apache.http.Header
      */
     public void addHeader(String name, String value) {
         if (this.headers == null) {
@@ -105,9 +141,12 @@ public class RequestParams {
     }
 
     /**
-     * Adds all the headers to this message.
-     *
-     * @param headers
+     * 增加所有的Header表头信息，将被附加在所有Header最后
+     * @param headers HTTP请求的表头信息
+     * @see #addHeader(String, String)
+     * @see #addHeader(Header)
+     * @see #setHeaders(List)
+     * @see org.apache.http.Header
      */
     public void addHeaders(List<Header> headers) {
         if (this.headers == null) {
@@ -119,10 +158,16 @@ public class RequestParams {
     }
 
     /**
+     * 覆盖Header表头信息，如果不存在，将被附加在所有Header最后
+     * 
+     * <pre>
      * Overwrites the first header with the same name.
      * The new header will be appended to the end of the list, if no header with the given name can be found.
-     *
+     * </pre>
+     * 
      * @param header
+     * @see #setHeader(String, String)
+     * @see #addHeader(Header)
      */
     public void setHeader(Header header) {
         if (this.headers == null) {
@@ -132,11 +177,17 @@ public class RequestParams {
     }
 
     /**
+     * 覆盖Header表头信息，如果不存在，将被附加在所有Header最后
+     * 
+     * <pre>
      * Overwrites the first header with the same name.
      * The new header will be appended to the end of the list, if no header with the given name can be found.
-     *
+     * </pre>
+     * 
      * @param name
      * @param value
+     * @see #addHeader(String, String)
+     * @see #setHeader(Header)
      */
     public void setHeader(String name, String value) {
         if (this.headers == null) {
@@ -146,7 +197,11 @@ public class RequestParams {
     }
 
     /**
+     * 覆盖Header表头信息
+     * 
+     * <pre>
      * Overwrites all the headers in the message.
+     * </pre>
      *
      * @param headers
      */
@@ -159,20 +214,31 @@ public class RequestParams {
         }
     }
 
+    /**
+     * 添加URL参数
+     * @param name 参数名
+     * @param value 参数对应的值
+     */
     public void addQueryStringParameter(String name, String value) {
         if (queryStringParams == null) {
             queryStringParams = new ArrayList<NameValuePair>();
         }
         queryStringParams.add(new BasicNameValuePair(name, value));
     }
-
+    /**
+     * 添加URL参数
+     * @param nameValuePair 参数键值对
+     */
     public void addQueryStringParameter(NameValuePair nameValuePair) {
         if (queryStringParams == null) {
             queryStringParams = new ArrayList<NameValuePair>();
         }
         queryStringParams.add(nameValuePair);
     }
-
+    /**
+     * 添加URL参数
+     * @param nameValuePairs 参数键值对集合
+     */
     public void addQueryStringParameter(List<NameValuePair> nameValuePairs) {
         if (queryStringParams == null) {
             queryStringParams = new ArrayList<NameValuePair>();
@@ -184,20 +250,31 @@ public class RequestParams {
         }
     }
 
+    /**
+     * 添加POST参数
+     * @param name 参数名
+     * @param value 参数对应的值
+     */
     public void addBodyParameter(String name, String value) {
         if (bodyParams == null) {
             bodyParams = new ArrayList<NameValuePair>();
         }
         bodyParams.add(new BasicNameValuePair(name, value));
     }
-
+    /**
+     * 添加POST参数
+     * @param nameValuePair 参数键值对
+     */
     public void addBodyParameter(NameValuePair nameValuePair) {
         if (bodyParams == null) {
             bodyParams = new ArrayList<NameValuePair>();
         }
         bodyParams.add(nameValuePair);
     }
-
+    /**
+     * 添加POST参数
+     * @param nameValuePairs 参数键值对集合
+     */
     public void addBodyParameter(List<NameValuePair> nameValuePairs) {
         if (bodyParams == null) {
             bodyParams = new ArrayList<NameValuePair>();
@@ -208,49 +285,89 @@ public class RequestParams {
             }
         }
     }
-
+    /**
+     * 添加POST参数（上传文件）
+     * @param name 参数名
+     * @param file 要上传的文件{@link java.io.File}
+     */
     public void addBodyParameter(String key, File file) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new FileBody(file));
     }
-
+    /**
+     * 添加POST参数（上传文件）
+     * @param name 参数名
+     * @param file 要上传的文件{@link java.io.File}
+     * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
+     */
     public void addBodyParameter(String key, File file, String mimeType) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new FileBody(file, mimeType));
     }
-
+    /**
+     * 添加POST参数（上传文件）
+     * @param name 参数名
+     * @param file 要上传的文件{@link java.io.File}
+     * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
+     * @param charset 文件编码
+     */
     public void addBodyParameter(String key, File file, String mimeType, String charset) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new FileBody(file, mimeType, charset));
     }
-
+    /**
+     * 添加POST参数（上传文件）
+     * @param name 参数名
+     * @param file 要上传的文件{@link java.io.File}
+     * @param fileName 文件名
+     * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
+     * @param charset 文件编码
+     */
     public void addBodyParameter(String key, File file, String fileName, String mimeType, String charset) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new FileBody(file, fileName, mimeType, charset));
     }
-
+    /**
+     * 添加POST参数（数据流）
+     * @param name 参数名
+     * @param stream 数据流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     */
     public void addBodyParameter(String key, InputStream stream, long length) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new InputStreamBody(stream, length));
     }
-
+    /**
+     * 添加POST参数（数据流）
+     * @param name 参数名
+     * @param stream 数据流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     * @param fileName 文件名
+     */
     public void addBodyParameter(String key, InputStream stream, long length, String fileName) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
         }
         fileParams.put(key, new InputStreamBody(stream, length, fileName));
     }
-
+    /**
+     * 添加POST参数（数据流）
+     * @param name 参数名
+     * @param stream 数据流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     * @param fileName 文件名
+     * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
+     */
     public void addBodyParameter(String key, InputStream stream, long length, String fileName, String mimeType) {
         if (fileParams == null) {
             fileParams = new HashMap<String, ContentBody>();
@@ -258,6 +375,10 @@ public class RequestParams {
         fileParams.put(key, new InputStreamBody(stream, length, fileName, mimeType));
     }
 
+    /**
+     * 设置参数主体
+     * @param bodyEntity 参数主体{@link org.apache.http.HttpEntity}
+     */
     public void setBodyEntity(HttpEntity bodyEntity) {
         this.bodyEntity = bodyEntity;
         if (bodyParams != null) {
@@ -271,7 +392,8 @@ public class RequestParams {
     }
 
     /**
-     * Returns an HttpEntity containing all request parameters
+     * 获取参数主体
+     * @return 返回包含所有请求参数的对象{@link org.apache.http.HttpEntity}
      */
     public HttpEntity getEntity() {
 
@@ -307,14 +429,27 @@ public class RequestParams {
         return result;
     }
 
+    /**
+     * 获取所有URL参数
+     * @return URL参数集合
+     */
     public List<NameValuePair> getQueryStringParams() {
         return queryStringParams;
     }
 
+    /**
+     * 获取所有请求头信息
+     * @return 请求头信息集合
+     */
     public List<HeaderItem> getHeaders() {
         return headers;
     }
 
+    
+    
+    /**
+     * 请求头信息描述
+     */
     public class HeaderItem {
         public final boolean overwrite;
         public final Header header;

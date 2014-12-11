@@ -21,14 +21,29 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * 网络请求的内容主体接口
+ * 
  * @since 4.0
  */
 public interface ContentBody extends ContentDescriptor {
 
+    /**
+     * 获取文件名
+     * @return 文件名
+     */
     String getFilename();
 
+    /**
+     * 将内容写入到输出流
+     * @param out IO输出流 {@link java.io.OutputStream}
+     * @throws IOExceptionIO流操作异常{@link java.io.IOException}
+     */
     void writeTo(OutputStream out) throws IOException;
 
+    /**
+     * 设置上传监听器
+     * @param callBackInfo 上传的回调函数{@link com.lidroid.xutils.http.client.multipart.MultipartEntity.CallBackInfo}
+     */
     void setCallBackInfo(MultipartEntity.CallBackInfo callBackInfo);
 
 }

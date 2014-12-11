@@ -18,11 +18,23 @@ package com.lidroid.xutils.http.client.entity;
 import com.lidroid.xutils.http.callback.RequestCallBackHandler;
 
 /**
+ * 上传参数实体的接口定义
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-7-3
  * Time: 下午1:40
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public interface UploadEntity {
+    
+    /**
+     * 设置进度更新监听
+     * @param callBackHandler 网络请求进度更新通知接口{@link com.lidroid.xutils.http.callback.RequestCallBackHandler}
+     */
     void setCallBackHandler(RequestCallBackHandler callBackHandler);
+    
 }

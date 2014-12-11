@@ -18,9 +18,18 @@ package com.lidroid.xutils.http.client.multipart;
 import com.lidroid.xutils.http.client.multipart.content.ContentBody;
 
 /**
+ * 内容主体组合
+ * 
+ * <pre>
+ * 这个类会基于封装的内容主体，自动填充HTTP请求头信息
+ * </pre>
+ * 
+ * <pre>
+ * 原文：
  * FormBodyPart class represents a content body that can be used as a part of multipart encoded
  * entities. This class automatically populates the header with standard fields based on
  * the content description of the enclosed body.
+ * </pre>
  *
  * @since 4.0
  */
@@ -31,6 +40,16 @@ public class FormBodyPart {
 
     private final ContentBody body;
 
+    /**
+     * 构造内容主体组合
+     * 
+     * <pre>
+     * name或body为空时，抛出异常{@link java.lang.IllegalArgumentException}
+     * </pre>
+     * 
+     * @param name 参数名
+     * @param body 内容主体{@link com.lidroid.xutils.http.client.multipart.content.ContentBody}
+     */
     public FormBodyPart(final String name, final ContentBody body) {
         super();
         if (name == null) {
@@ -47,7 +66,17 @@ public class FormBodyPart {
         generateContentType(body);
         generateTransferEncoding(body);
     }
-
+    /**
+     * 构造内容主体组合
+     * 
+     * <pre>
+     * name或body为空时，抛出异常{@link java.lang.IllegalArgumentException}
+     * </pre>
+     * 
+     * @param name 参数名
+     * @param body 内容主体{@link com.lidroid.xutils.http.client.multipart.content.ContentBody}
+     * @param contentDisposition Content-Disposition
+     */
     public FormBodyPart(final String name, final ContentBody body, final String contentDisposition) {
         super();
         if (name == null) {
@@ -69,18 +98,41 @@ public class FormBodyPart {
         generateTransferEncoding(body);
     }
 
+    
+    /**
+     * 获取参数名
+     * @return 参数名
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * 获取内容主体
+     * @return 内容主体{@link com.lidroid.xutils.http.client.multipart.content.ContentBody}
+     */
     public ContentBody getBody() {
         return this.body;
     }
 
+    /**
+     * 获取HTTP请求头信息
+     * @return HTTP请求头信息{@link com.lidroid.xutils.http.client.multipart.MinimalFieldHeader}
+     */
     public MinimalFieldHeader getHeader() {
         return this.header;
     }
 
+    /**
+     * 添加HTPP请求头信息
+     * 
+     * <pre>
+     * name为空时，抛出异常{@link java.lang.IllegalArgumentException}
+     * </pre>
+     * 
+     * @param name 请求头参数名
+     * @param value 请求头参数的值
+     */
     public void addField(final String name, final String value) {
         if (name == null) {
             throw new IllegalArgumentException("Field name may not be null");

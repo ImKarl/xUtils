@@ -25,9 +25,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * SQL语句WHERE条件
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-7-29
  * Time: 上午9:35
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class WhereBuilder {
 
@@ -38,64 +44,74 @@ public class WhereBuilder {
     }
 
     /**
-     * create new instance
-     *
-     * @return
+     * 实例化WHERE条件
      */
     public static WhereBuilder b() {
         return new WhereBuilder();
     }
-
     /**
-     * create new instance
-     *
-     * @param columnName
-     * @param op         operator: "=","<","LIKE","IN","BETWEEN"...
-     * @param value
-     * @return
+     * 实例化WHERE条件
+     * @param columnName 列名
+     * @param op SQL运算符（包括：算数、比较、逻辑运算符，如: "=","<","LIKE","IN","BETWEEN"...）
+     * @param value 对应的值
+     * @return 当前实例
      */
     public static WhereBuilder b(String columnName, String op, Object value) {
         WhereBuilder result = new WhereBuilder();
         result.appendCondition(null, columnName, op, value);
         return result;
     }
-
+    
+    
     /**
-     * add AND condition
-     *
-     * @param columnName
-     * @param op         operator: "=","<","LIKE","IN","BETWEEN"...
-     * @param value
-     * @return
+     * AND方式，添加WHERE条件
+     * @param columnName 列名
+     * @param op SQL运算符（包括：算数、比较、逻辑运算符，如: "=","<","LIKE","IN","BETWEEN"...）
+     * @param value 对应的值
+     * @return 当前实例
      */
     public WhereBuilder and(String columnName, String op, Object value) {
         appendCondition(whereItems.size() == 0 ? null : "AND", columnName, op, value);
         return this;
     }
-
+    
     /**
-     * add OR condition
-     *
-     * @param columnName
-     * @param op         operator: "=","<","LIKE","IN","BETWEEN"...
-     * @param value
-     * @return
+     * OR方式，添加WHERE条件
+     * @param columnName 列名
+     * @param op SQL运算符（包括：算数、比较、逻辑运算符，如: "=","<","LIKE","IN","BETWEEN"...）
+     * @param value 对应的值
+     * @return 当前实例
      */
     public WhereBuilder or(String columnName, String op, Object value) {
         appendCondition(whereItems.size() == 0 ? null : "OR", columnName, op, value);
         return this;
     }
 
+    /**
+     * 表达式方式，添加WHERE条件（无连接词）
+     * @param expr SQL表达式（如：name='admin'）
+     * @return 当前实例
+     */
     public WhereBuilder expr(String expr) {
         whereItems.add(" " + expr);
         return this;
     }
-
+    /**
+     * 表达式方式，添加WHERE条件（无连接词）
+     * @param columnName 列名
+     * @param op SQL运算符（包括：算数、比较、逻辑运算符，如: "=","<","LIKE","IN","BETWEEN"...）
+     * @param value 对应的值
+     * @return 当前实例
+     */
     public WhereBuilder expr(String columnName, String op, Object value) {
         appendCondition(null, columnName, op, value);
         return this;
     }
 
+    /**
+     * 获取WHERE条件个数
+     * @return WHERE条件个数
+     */
     public int getWhereItemSize() {
         return whereItems.size();
     }
@@ -236,4 +252,5 @@ public class WhereBuilder {
         }
         whereItems.add(sqlSb.toString());
     }
+    
 }

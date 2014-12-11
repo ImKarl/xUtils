@@ -22,65 +22,79 @@ import android.view.View;
 import android.widget.ImageView;
 import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 
+/**
+ * 图片加载回调接口
+ * @param <T> 控件类型{@link android.view.View}
+ */
 public abstract class BitmapLoadCallBack<T extends View> {
 
     /**
-     * Call back when start loading.
+     * 图片加载前回调通知
      *
-     * @param container
-     * @param uri
-     * @param config
+     * @param container 控件{@link android.view.View}
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
      */
     public void onPreLoad(T container, String uri, BitmapDisplayConfig config) {
     }
 
     /**
-     * Call back when start loading.
+     * 图片开始加载时回调通知
      *
-     * @param container
-     * @param uri
-     * @param config
+     * @param container 控件{@link android.view.View}
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
      */
     public void onLoadStarted(T container, String uri, BitmapDisplayConfig config) {
     }
 
     /**
-     * Call back when loading.
+     * 图片加载时，进度更新回调通知
      *
-     * @param container
-     * @param uri
-     * @param config
-     * @param total
-     * @param current
+     * @param container 控件{@link android.view.View}
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
+     * @param total 图片总大小（byte）
+     * @param current 当前下载大小（byte）
      */
     public void onLoading(T container, String uri, BitmapDisplayConfig config, long total, long current) {
     }
 
     /**
-     * Call back when bitmap has loaded.
+     * 图片加载成功时回调通知
      *
-     * @param container
-     * @param uri
-     * @param bitmap
-     * @param config
+     * @param container 控件{@link android.view.View}
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param bitmap Bitmap位图{@link android.graphics.Bitmap}
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
+     * @param from 图片来源
      */
     public abstract void onLoadCompleted(T container, String uri, Bitmap bitmap, BitmapDisplayConfig config, BitmapLoadFrom from);
 
     /**
-     * Call back when bitmap failed to load.
-     *
-     * @param container
-     * @param uri
-     * @param drawable
+     * 图加载失败时回调通知
+     * 
+     * @param container 控件{@link android.view.View}
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param drawable 图片{@link android.graphics.drawable.Drawable}
      */
     public abstract void onLoadFailed(T container, String uri, Drawable drawable);
 
     private BitmapSetter<T> bitmapSetter;
 
+    /**
+     * 设置Bitmap位图显示器
+     * @param bitmapSetter Bitmap位图显示器{@link com.lidroid.xutils.bitmap.callback.BitmapSetter}
+     */
     public void setBitmapSetter(BitmapSetter<T> bitmapSetter) {
         this.bitmapSetter = bitmapSetter;
     }
 
+    /**
+     * 显示图片到控件
+     * @param container 控件{@link android.view.View}
+     * @param bitmap 位图{@link android.graphics.Bitmap}
+     */
     public void setBitmap(T container, Bitmap bitmap) {
         if (bitmapSetter != null) {
             bitmapSetter.setBitmap(container, bitmap);
@@ -91,6 +105,11 @@ public abstract class BitmapLoadCallBack<T extends View> {
         }
     }
 
+    /**
+     * 显示图片到控件
+     * @param container 控件{@link android.view.View}
+     * @param drawable 图片{@link android.graphics.drawable.Drawable}
+     */
     public void setDrawable(T container, Drawable drawable) {
         if (bitmapSetter != null) {
             bitmapSetter.setDrawable(container, drawable);
@@ -101,6 +120,11 @@ public abstract class BitmapLoadCallBack<T extends View> {
         }
     }
 
+    /**
+     * 获取图片
+     * @param container 控件{@link android.view.View}
+     * @return 图片{@link android.graphics.drawable.Drawable}
+     */
     public Drawable getDrawable(T container) {
         if (bitmapSetter != null) {
             return bitmapSetter.getDrawable(container);
@@ -110,4 +134,5 @@ public abstract class BitmapLoadCallBack<T extends View> {
             return container.getBackground();
         }
     }
+    
 }

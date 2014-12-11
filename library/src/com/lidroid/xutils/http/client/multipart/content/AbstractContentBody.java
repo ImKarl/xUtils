@@ -18,6 +18,7 @@ package com.lidroid.xutils.http.client.multipart.content;
 import com.lidroid.xutils.http.client.multipart.MultipartEntity;
 
 /**
+ * 网络请求的内容主体抽象类
  * @since 4.0
  */
 public abstract class AbstractContentBody implements ContentBody {
@@ -26,6 +27,11 @@ public abstract class AbstractContentBody implements ContentBody {
     private final String mediaType;
     private final String subType;
 
+    /**
+     * 构造网络请求的内容主体
+     * @param mimeType MIME类型
+     * @see com.lidroid.xutils.http.client.multipart.MIME
+     */
     public AbstractContentBody(final String mimeType) {
         super();
         if (mimeType == null) {
@@ -60,4 +66,5 @@ public abstract class AbstractContentBody implements ContentBody {
     public void setCallBackInfo(MultipartEntity.CallBackInfo callBackInfo) {
         this.callBackInfo = callBackInfo;
     }
+    
 }

@@ -25,10 +25,16 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 /**
+ * 网络请求上传数据流实体
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-6-28
  * Time: 上午12:14
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class InputStreamUploadEntity extends AbstractHttpEntity implements UploadEntity {
 
@@ -37,6 +43,11 @@ public class InputStreamUploadEntity extends AbstractHttpEntity implements Uploa
     private final InputStream content;
     private final long length;
 
+    /**
+     * 构造网络请求上传数据流实体
+     * @param inputStream 要上传的数据流{@link java.io.InputStream}
+     * @param length 数据流的长度（单位：byte）
+     */
     public InputStreamUploadEntity(final InputStream inputStream, long length) {
         super();
         if (inputStream == null) {
@@ -46,20 +57,37 @@ public class InputStreamUploadEntity extends AbstractHttpEntity implements Uploa
         this.length = length;
     }
 
+    /**
+     * 判断该参数实体是否可重复
+     * @return <code>false</code>（不可重复）
+     */
     public boolean isRepeatable() {
         return false;
     }
 
+    /**
+     * 获取数据流的长度
+     * @return 数据流的长度（单位：byte）
+     */
     public long getContentLength() {
         return this.length;
     }
 
+    /**
+     * 获取当前包装的数据流
+     * @return 数据流{@link java.io.InputStream}
+     */
     public InputStream getContent() throws IOException {
         return this.content;
     }
 
     private long uploadedSize = 0;
 
+    /**
+     * 将内容写入到输出流
+     * @param outStream IO输出流 {@link java.io.OutputStream}
+     * @throws IOException IO流操作异常{@link java.io.IOException}
+     */
     public void writeTo(final OutputStream outStream) throws IOException {
         if (outStream == null) {
             throw new IllegalArgumentException("Output stream may not be null");
@@ -106,11 +134,26 @@ public class InputStreamUploadEntity extends AbstractHttpEntity implements Uploa
         }
     }
 
+    /**
+     * 判断该参数实体是否为数据流
+     * @return <code>true</code>（是IO数据流）
+     */
     public boolean isStreaming() {
         return true;
     }
 
     /**
+     * 如果输入流是从一个连接，关闭它会读到内容的末尾。否则，不处理它
+     * 
+     * <pre>
+     * 原文：
+     * If the input stream is from a connection, closing it will read to the end of the content. Otherwise, we don't care what it does.
+     * 
+     * <code>@deprecated</code>
+     * Either use {@link #getContent()} and call {@link java.io.InputStream#close()} on that;
+     * otherwise call {@link #writeTo(java.io.OutputStream)} which is required to free the resources.
+     * </pre>
+     * 
      * @deprecated Either use {@link #getContent()} and call {@link java.io.InputStream#close()} on that;
      *             otherwise call {@link #writeTo(java.io.OutputStream)} which is required to free the resources.
      */
@@ -126,4 +169,5 @@ public class InputStreamUploadEntity extends AbstractHttpEntity implements Uploa
     public void setCallBackHandler(RequestCallBackHandler callBackHandler) {
         this.callBackHandler = callBackHandler;
     }
+    
 }

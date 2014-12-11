@@ -21,12 +21,28 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 数据库表中列CHECK约束注解（限制值的范围）
+ * 
+ * <pre>
+ * SQL CHECK列约束用于限制列中的值的范围
+ * </pre>
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-20
  * Time: 上午9:44
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Check {
+    
+    /**
+     * 标识该列只允许特定的值
+     * @return 该列允许的值
+     */
     String value();
+    
 }

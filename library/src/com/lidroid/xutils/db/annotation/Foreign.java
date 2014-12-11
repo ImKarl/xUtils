@@ -20,11 +20,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 数据库表的从表关联注解
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Foreign {
 
+    /**
+     * 关联主表的列名（会在该实体类对应的表生成列）
+     * @return 关联主表ID的列名（关联列的名称）
+     */
     String column() default "";
 
+    /**
+     * 从表的主键ID的列名（当前实体类对应的表）
+     * @return 当前ID列名
+     */
     String foreign();
+    
 }

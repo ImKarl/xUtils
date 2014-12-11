@@ -35,9 +35,15 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
+ * HTTP请求实体
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-7-26
  * Time: 下午2:49
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingRequest {
 
@@ -49,33 +55,59 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
 
     private Charset uriCharset;
 
+    /**
+     * 构造HTTP请求
+     * @param method HTTP请求类型{@link com.lidroid.xutils.http.client.HttpRequest.HttpMethod}
+     */
     public HttpRequest(HttpMethod method) {
         super();
         this.method = method;
     }
-
+    /**
+     * 构造HTTP请求
+     * @param method HTTP请求类型{@link com.lidroid.xutils.http.client.HttpRequest.HttpMethod}
+     * @param uri URL地址
+     */
     public HttpRequest(HttpMethod method, String uri) {
         super();
         this.method = method;
         setURI(uri);
     }
-
+    /**
+     * 构造HTTP请求
+     * @param method HTTP请求类型{@link com.lidroid.xutils.http.client.HttpRequest.HttpMethod}
+     * @param uri URL地址
+     */
     public HttpRequest(HttpMethod method, URI uri) {
         super();
         this.method = method;
         setURI(uri);
     }
 
+    /**
+     * 添加URL参数
+     * @param name 参数名
+     * @param value 参数的值
+     * @return 当前实例
+     */
     public HttpRequest addQueryStringParameter(String name, String value) {
         uriBuilder.addParameter(name, value);
         return this;
     }
-
+    /**
+     * 添加URL参数
+     * @param nameValuePair 参数
+     * @return 当前实例
+     */
     public HttpRequest addQueryStringParameter(NameValuePair nameValuePair) {
         uriBuilder.addParameter(nameValuePair.getName(), nameValuePair.getValue());
         return this;
     }
-
+    /**
+     * 添加URL参数
+     * @param nameValuePair 参数集合
+     * @return 当前实例
+     */
     public HttpRequest addQueryStringParams(List<NameValuePair> nameValuePairs) {
         if (nameValuePairs != null) {
             for (NameValuePair nameValuePair : nameValuePairs) {
@@ -84,7 +116,11 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
         }
         return this;
     }
-
+    
+    /**
+     * 设置请求参数（可能有覆盖）
+     * @param param 请求参数{@link com.lidroid.xutils.http.RequestParams}
+     */
     public void setRequestParams(RequestParams param) {
         if (param != null) {
             if (uriCharset == null) {
@@ -104,7 +140,11 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
             this.setEntity(param.getEntity());
         }
     }
-
+    /**
+     * 设置请求参数（可能有覆盖）
+     * @param param 请求参数{@link com.lidroid.xutils.http.RequestParams}
+     * @param callBackHandler 网络请求进度更新通知接口{@link com.lidroid.xutils.http.callback.RequestCallBackHandler}
+     */
     public void setRequestParams(RequestParams param, RequestCallBackHandler callBackHandler) {
         if (param != null) {
             if (uriCharset == null) {
@@ -131,6 +171,10 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
         }
     }
 
+    /**
+     * 获取URI
+     * @return {@link java.net.URI}
+     */
     @Override
     public URI getURI() {
         try {
@@ -147,25 +191,45 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
         }
     }
 
+    /**
+     * 设置URI
+     * @param uri URI{@link java.net.URI}
+     */
     @Override
     public void setURI(URI uri) {
         this.uriBuilder = new URIBuilder(uri);
     }
 
+    /**
+     * 设置URI
+     * @param uri URI{@link java.net.URI}
+     */
     public void setURI(String uri) {
         this.uriBuilder = new URIBuilder(uri);
     }
 
+    /**
+     * 获取HTTP请求类型
+     * @return HTTP请求类型
+     */
     @Override
     public String getMethod() {
         return this.method.toString();
     }
 
+    /**
+     * 获取网络请求参数实体
+     * @return 网络请求参数实体{@link org.apache.http.HttpEntity}
+     */
     @Override
     public HttpEntity getEntity() {
         return this.entity;
     }
 
+    /**
+     * 设置网络请求参数实体
+     * @param entity 网络请求参数实体{@link org.apache.http.HttpEntity}
+     */
     @Override
     public void setEntity(final HttpEntity entity) {
         this.entity = entity;
@@ -177,6 +241,10 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
         return expect != null && HTTP.EXPECT_CONTINUE.equalsIgnoreCase(expect.getValue());
     }
 
+    /**
+     * 克隆当前对象
+     * @return 新的实例
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         HttpRequest clone = (HttpRequest) super.clone();
@@ -186,6 +254,9 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
         return clone;
     }
 
+    /**
+     * HTTP请求类型
+     */
     public static enum HttpMethod {
         GET("GET"),
         POST("POST"),

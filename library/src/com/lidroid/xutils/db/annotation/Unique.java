@@ -21,9 +21,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 数据库表中列UNIQUE约束注解（唯一性约束）
+ * 
+ * <pre>
+ * SQL UNIQUE列约束用于唯一标识数据库表中的每条记录
+ * </pre>
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-20
  * Time: 上午9:41
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

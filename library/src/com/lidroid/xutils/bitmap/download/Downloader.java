@@ -20,14 +20,17 @@ import com.lidroid.xutils.BitmapUtils;
 
 import java.io.OutputStream;
 
+/**
+ * 图片下载器
+ */
 public abstract class Downloader {
 
     /**
-     * Download bitmap to outputStream by uri.
-     *
-     * @param uri
-     * @param outputStream
-     * @return The expiry time stamp or -1 if failed to download.
+     * 根据URL下载Bitmap位图
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param outputStream 图片IO输出流
+     * @param task 图片加载任务管理器
+     * @return 过期时间的时间戳（如果下载失败，返回-1）
      */
     public abstract long downloadToStream(String uri, OutputStream outputStream, final BitmapUtils.BitmapLoadTask<?> task);
 
@@ -36,34 +39,66 @@ public abstract class Downloader {
     private int defaultConnectTimeout;
     private int defaultReadTimeout;
 
+    /**
+     * 获取{@link andorid.content.Context}
+     * @return {@link andorid.content.Context}
+     */
     public Context getContext() {
         return context;
     }
 
+    /**
+     * 设置{@link andorid.content.Context}
+     * @param context andorid.content.Context
+     */
     public void setContext(Context context) {
         this.context = context;
     }
 
+    /**
+     * 设置默认过期时间
+     * @param expiry 时间戳
+     */
     public void setDefaultExpiry(long expiry) {
         this.defaultExpiry = expiry;
     }
 
+    /**
+     * 获取默认过期时间
+     * @return 时间戳
+     */
     public long getDefaultExpiry() {
         return this.defaultExpiry;
     }
 
+    /**
+     * 获取默认连接超时时长
+     * @return 连接超时时长
+     */
     public int getDefaultConnectTimeout() {
         return defaultConnectTimeout;
     }
 
+    /**
+     * 设置默认连接超时时长
+     * @param defaultConnectTimeout 连接超时时长
+     */
     public void setDefaultConnectTimeout(int defaultConnectTimeout) {
         this.defaultConnectTimeout = defaultConnectTimeout;
     }
 
+    /**
+     * 获取默认读取数据超时时长
+     * @return 读取数据超时时长
+     */
     public int getDefaultReadTimeout() {
         return defaultReadTimeout;
     }
 
+    /**
+     * 设置默认读取数据超时时长
+     * @param defaultReadTimeout 读取数据超时时长
+     */
     public void setDefaultReadTimeout(int defaultReadTimeout) {
         this.defaultReadTimeout = defaultReadTimeout;
     }

@@ -26,11 +26,19 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 数据库表的辅助工具
+ */
 public class TableUtils {
 
     private TableUtils() {
     }
 
+    /**
+     * 根据实体类类型，获取数据库表名
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @return 数据库表名
+     */
     public static String getTableName(Class<?> entityType) {
         Table table = entityType.getAnnotation(Table.class);
         if (table == null || TextUtils.isEmpty(table.name())) {
@@ -39,6 +47,11 @@ public class TableUtils {
         return table.name();
     }
 
+    /**
+     * 根据实体类类型，数据库表创建后执行的SQL语句
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @return 数据库表创建后执行的SQL语句
+     */
     public static String getExecAfterTableCreated(Class<?> entityType) {
         Table table = entityType.getAnnotation(Table.class);
         if (table != null) {

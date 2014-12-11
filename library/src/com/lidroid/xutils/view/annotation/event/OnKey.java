@@ -23,9 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 键盘点击事件注解
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-16
  * Time: 下午2:27
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -34,7 +40,17 @@ import java.lang.annotation.Target;
         listenerSetter = "setOnKeyListener",
         methodName = "onKey")
 public @interface OnKey {
+    
+    /**
+     * 要绑定事件的控件ID
+     * @return 控件ID
+     */
     int[] value();
 
+    /**
+     * 所属父控件的ID
+     * @return 控件ID
+     */
     int[] parentId() default 0;
+    
 }

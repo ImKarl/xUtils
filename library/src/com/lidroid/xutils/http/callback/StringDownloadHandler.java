@@ -24,8 +24,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * 网络文本数据下载处理器
+ */
 public class StringDownloadHandler {
 
+    /**
+     * 处理网络文本数据下载
+     * 
+     * @param entity 网络请求实体{@link org.apache.http.HttpEntity}
+     * @param callBackHandler 网络请求进度更新通知接口{@link com.lidroid.xutils.http.callback.RequestCallBackHandler}
+     * @param charset 字符编码
+     * @return 下载得到的文本数据（下载失败时，返回null）
+     * @throws IOException IO读取异常{@link java.io.IOException}
+     */
     public String handleEntity(HttpEntity entity, RequestCallBackHandler callBackHandler, String charset) throws IOException {
         if (entity == null) return null;
 

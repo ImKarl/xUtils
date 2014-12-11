@@ -8,9 +8,15 @@ import com.lidroid.xutils.BitmapUtils;
 import java.lang.ref.WeakReference;
 
 /**
+ * 代理图片
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-11-17
  * Time: 上午11:42
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class AsyncDrawable<T extends View> extends Drawable {
 
@@ -18,6 +24,11 @@ public class AsyncDrawable<T extends View> extends Drawable {
 
     private final Drawable baseDrawable;
 
+    /**
+     * 构造代理图片
+     * @param drawable 需要代理的图片
+     * @param bitmapWorkerTask 图片加载任务管理器{@link com.lidroid.xutils.BitmapUtils.BitmapLoadTask}
+     */
     public AsyncDrawable(Drawable drawable, BitmapUtils.BitmapLoadTask<T> bitmapWorkerTask) {
         if (bitmapWorkerTask == null) {
             throw new IllegalArgumentException("bitmapWorkerTask may not be null");
@@ -26,6 +37,10 @@ public class AsyncDrawable<T extends View> extends Drawable {
         bitmapLoadTaskReference = new WeakReference<BitmapUtils.BitmapLoadTask<T>>(bitmapWorkerTask);
     }
 
+    /**
+     * 获取图片加载任务管理器
+     * @return 图片加载任务管理器{@link com.lidroid.xutils.BitmapUtils.BitmapLoadTask}
+     */
     public BitmapUtils.BitmapLoadTask<T> getBitmapWorkerTask() {
         return bitmapLoadTaskReference.get();
     }

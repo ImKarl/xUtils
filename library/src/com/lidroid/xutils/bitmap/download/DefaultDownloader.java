@@ -24,15 +24,17 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * 默认的图片下载器
+ */
 public class DefaultDownloader extends Downloader {
 
     /**
-     * Download bitmap to outputStream by uri.
-     *
-     * @param uri          file path, assets path(assets/xxx) or http url.
-     * @param outputStream
-     * @param task
-     * @return The expiry time stamp or -1 if failed to download.
+     * 根据URL下载Bitmap位图
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param outputStream 图片IO输出流
+     * @param task 图片加载任务管理器
+     * @return 过期时间的时间戳（如果下载失败，返回-1）
      */
     @Override
     public long downloadToStream(String uri, OutputStream outputStream, final BitmapUtils.BitmapLoadTask<?> task) {
@@ -89,4 +91,5 @@ public class DefaultDownloader extends Downloader {
         }
         return result;
     }
+
 }

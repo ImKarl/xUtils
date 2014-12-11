@@ -21,11 +21,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 数据库表中列NOT NULL约束注解（非空约束）
+ * 
+ * <pre>
+ * SQL NOT NULL列约束用于强制列不接受NULL值
+ * </pre>
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-20
  * Time: 上午9:42
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotNull {
+    
+    
+    
 }

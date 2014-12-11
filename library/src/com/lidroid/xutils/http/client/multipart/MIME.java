@@ -20,6 +20,7 @@ import org.apache.http.protocol.HTTP;
 import java.nio.charset.Charset;
 
 /**
+ * MIME常量
  * @since 4.0
  */
 public class MIME {
@@ -32,8 +33,8 @@ public class MIME {
     public static final String ENC_BINARY = "binary";
 
     /**
-     * The default character set to be used, i.e. "UTF-8"
+     * 默认使用的编码，即："UTF-8"
      */
     public static final Charset DEFAULT_CHARSET = Charset.forName(HTTP.UTF_8);
-
+    
 }

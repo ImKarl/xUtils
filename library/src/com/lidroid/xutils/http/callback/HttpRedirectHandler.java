@@ -19,11 +19,22 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
+ * HTTP重定向处理器
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-7-17
  * Time: 上午10:36
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public interface HttpRedirectHandler {
+    /**
+     * 获取重定向的HTTP请求描述
+     * @param response 重定向响应信息{@link org.apache.http.HttpResponse}
+     * @return HTTP请求描述{@link org.apache.http.client.methods.HttpRequestBase}
+     */
     HttpRequestBase getDirectRequest(HttpResponse response);
 }

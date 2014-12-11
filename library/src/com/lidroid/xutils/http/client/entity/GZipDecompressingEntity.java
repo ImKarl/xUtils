@@ -22,14 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
-
+/**
+ * GZip参数实体的数据流解压器（实现自{@link org.apache.http.HttpEntity}）
+ */
 public class GZipDecompressingEntity extends DecompressingEntity {
 
     /**
-     * Creates a new {@link GZipDecompressingEntity} which will wrap the specified
-     * {@link org.apache.http.HttpEntity}.
-     *
-     * @param entity the non-null {@link org.apache.http.HttpEntity} to be wrapped
+     * 构造GZip数据流解压器（包装请求参数实体）
+     * @param wrapped 非空的网络请求参数实体{@link org.apache.http.HttpEntity}
      */
     public GZipDecompressingEntity(final HttpEntity entity) {
         super(entity);
@@ -41,12 +41,18 @@ public class GZipDecompressingEntity extends DecompressingEntity {
     }
 
     /**
-     * {@inheritDoc}
+     * 获取内容编码
+     * 
+     * <pre>
+     * 原文：This HttpEntityWrapper has dealt with the Content-Encoding
+     * </pre>
+     * 
+     * @return <code>null</code>
      */
     @Override
     public Header getContentEncoding() {
-
         /* This HttpEntityWrapper has dealt with the Content-Encoding. */
         return null;
     }
+    
 }

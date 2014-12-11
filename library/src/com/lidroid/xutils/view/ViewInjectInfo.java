@@ -1,12 +1,26 @@
 package com.lidroid.xutils.view;
 
 /**
+ * 控件注入{@link android.view.View}注解信息
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-12-5
  * Time: 下午11:25
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class ViewInjectInfo {
+    
+    /**
+     * 控件ID的值
+     */
     public Object value;
+    
+    /**
+     * 所属父控件的ID
+     */
     public int parentId;
 
     @Override

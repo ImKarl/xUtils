@@ -31,6 +31,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 
+/**
+ * HTTP请求重试处理器
+ */
 public class RetryHandler implements HttpRequestRetryHandler {
 
     private static final int RETRY_SLEEP_INTERVAL = 500;
@@ -50,10 +53,21 @@ public class RetryHandler implements HttpRequestRetryHandler {
 
     private final int maxRetries;
 
+    /**
+     * 构造HTTP请求重试处理器
+     * @param maxRetries 最大重试次数
+     */
     public RetryHandler(int maxRetries) {
         this.maxRetries = maxRetries;
     }
 
+    /**
+     * 重试请求
+     * @param exception IO异常{@link java.io.IOException}
+     * @param retriedTimes 当前重试次数
+     * @param context HTTP请求上下文{@link org.apache.http.protocol.HttpContext}
+     * @return 重试是否成功
+     */
     @Override
     public boolean retryRequest(IOException exception, int retriedTimes, HttpContext context) {
         boolean retry = true;

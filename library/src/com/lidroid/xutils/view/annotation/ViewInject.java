@@ -20,12 +20,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 控件{@link android.view.View}绑定注解
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ViewInject {
 
+    /**
+     * 要绑定事件的控件ID
+     * @return 控件ID
+     */
     int value();
 
     /* parent view id */
+    /**
+     * 所属父控件的ID
+     * @return 控件ID
+     */
     int parentId() default 0;
+    
 }

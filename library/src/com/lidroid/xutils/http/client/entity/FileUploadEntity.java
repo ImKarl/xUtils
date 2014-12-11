@@ -15,20 +15,37 @@
 
 package com.lidroid.xutils.http.client.entity;
 
-import com.lidroid.xutils.http.callback.RequestCallBackHandler;
-import com.lidroid.xutils.util.IOUtils;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
+
 import org.apache.http.entity.FileEntity;
 
-import java.io.*;
+import com.lidroid.xutils.http.callback.RequestCallBackHandler;
+import com.lidroid.xutils.util.IOUtils;
 
 /**
+ * 文件上传参数实体
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-6-24
  * Time: 下午4:45
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class FileUploadEntity extends FileEntity implements UploadEntity {
 
+    /**
+     * 构造文件上传参数实体
+     * @param file 要上传的文件
+     * @param contentType 内容类型（CONTENT-TYPE）
+     */
     public FileUploadEntity(File file, String contentType) {
         super(file, contentType);
         fileSize = file.length();
@@ -37,6 +54,11 @@ public class FileUploadEntity extends FileEntity implements UploadEntity {
     private long fileSize;
     private long uploadedSize = 0;
 
+    /**
+     * 将参数内容写入到输出流
+     * @param outStream IO输出流 {@link java.io.OutputStream}
+     * @throws IOException IO流操作异常{@link java.io.IOException}
+     */
     @Override
     public void writeTo(OutputStream outStream) throws IOException {
         if (outStream == null) {
@@ -71,4 +93,5 @@ public class FileUploadEntity extends FileEntity implements UploadEntity {
     public void setCallBackHandler(RequestCallBackHandler callBackHandler) {
         this.callBackHandler = callBackHandler;
     }
+    
 }

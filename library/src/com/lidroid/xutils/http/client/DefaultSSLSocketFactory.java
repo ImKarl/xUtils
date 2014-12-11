@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.security.*;
 
 /**
- * trust all certs
+ * SSL协议连接工厂（信任所有证书）
  */
 public class DefaultSSLSocketFactory extends SSLSocketFactory {
 
@@ -30,6 +30,10 @@ public class DefaultSSLSocketFactory extends SSLSocketFactory {
 
     private static DefaultSSLSocketFactory instance;
 
+    /**
+     * 获取默认的SSL协议连接工厂单例
+     * @return SSL协议连接工厂{@link com.lidroid.xutils.http.client.DefaultSSLSocketFactory}
+     */
     public static DefaultSSLSocketFactory getSocketFactory() {
         if (instance == null) {
             try {
@@ -70,13 +74,28 @@ public class DefaultSSLSocketFactory extends SSLSocketFactory {
         this.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
     }
 
+    /**
+     * 创建连接
+     * @param socket {@link java.net.Socket}
+     * @param host 主机HOST
+     * @param port 端口
+     * @param autoClose 是否自动关闭连接
+     * @return {@link java.net.Socket}
+     * @throws IOException IO网络通讯异常
+     */
     @Override
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
     }
 
+    /**
+     * 创建连接
+     * @return {@link java.net.Socket}
+     * @throws IOException IO网络通讯异常
+     */
     @Override
     public Socket createSocket() throws IOException {
         return sslContext.getSocketFactory().createSocket();
     }
+    
 }

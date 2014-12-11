@@ -21,8 +21,28 @@ import org.apache.http.HttpEntity;
 
 import java.io.*;
 
+/**
+ * 网络文件下载处理器
+ */
 public class FileDownloadHandler {
 
+    /**
+     * 处理网络文件下载
+     * 
+     * <pre>
+     * 保存到目标路径（target）；
+     * 文件可重命名时，修改文件名（responseFileName）；
+     * 下载失败时，返回null。
+     * </pre>
+     * 
+     * @param entity 网络请求实体{@link org.apache.http.HttpEntity}
+     * @param callBackHandler 网络请求进度更新通知接口{@link com.lidroid.xutils.http.callback.RequestCallBackHandler}
+     * @param target 下载文件的目标路径（完整保存路径）
+     * @param isResume 是否支持恢复
+     * @param responseFileName 文件下载完成后的文件名（如果文件已存在，则添加当前时间戳前缀）
+     * @return 保存到target的路径；文件可重命名时，修改文件名为responseFileName；下载失败时，返回null。{@link java.io.File}
+     * @throws IOException IO读取异常{@link java.io.IOException}
+     */
     public File handleEntity(HttpEntity entity,
                              RequestCallBackHandler callBackHandler,
                              String target,

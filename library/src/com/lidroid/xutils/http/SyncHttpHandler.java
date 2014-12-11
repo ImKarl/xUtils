@@ -29,6 +29,9 @@ import org.apache.http.protocol.HttpContext;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+/**
+ * 同步网络请求处理器
+ */
 public class SyncHttpHandler {
 
     private final AbstractHttpClient client;
@@ -36,6 +39,10 @@ public class SyncHttpHandler {
 
     private HttpRedirectHandler httpRedirectHandler;
 
+    /**
+     * 设置HTTP重定向处理器
+     * @param httpRedirectHandler HTTP重定向处理器{@link com.lidroid.xutils.http.callback.HttpRedirectHandler}
+     */
     public void setHttpRedirectHandler(HttpRedirectHandler httpRedirectHandler) {
         this.httpRedirectHandler = httpRedirectHandler;
     }
@@ -46,6 +53,12 @@ public class SyncHttpHandler {
 
     private int retriedTimes = 0;
 
+    /**
+     * 构造HTTP重定向处理器
+     * @param client HTTP客户端编程工具包{@link org.apache.http.impl.client.AbstractHttpClient}
+     * @param context HTTP请求上下文{@link org.apache.http.protocol.HttpContext}
+     * @param charset 字符编码
+     */
     public SyncHttpHandler(AbstractHttpClient client, HttpContext context, String charset) {
         this.client = client;
         this.context = context;
@@ -55,12 +68,21 @@ public class SyncHttpHandler {
 
     private long expiry = HttpCache.getDefaultExpiryTime();
 
+    /**
+     * 设置过期时间
+     * @param expiry 过期时间（时间戳）
+     */
     public void setExpiry(long expiry) {
         this.expiry = expiry;
     }
 
+    /**
+     * 发送同步网络请求
+     * @param request HTTP请求实体{@link org.apache.http.client.methods.HttpRequestBase}
+     * @return 网络请求数据读取通道{@link com.lidroid.xutils.http.ResponseStream}
+     * @throws HttpException 网络请求异常{@link com.lidroid.xutils.exception.HttpException}
+     */
     public ResponseStream sendRequest(HttpRequestBase request) throws HttpException {
-
         HttpRequestRetryHandler retryHandler = client.getHttpRequestRetryHandler();
         while (true) {
             boolean retry = true;
@@ -99,7 +121,13 @@ public class SyncHttpHandler {
             }
         }
     }
-
+    /**
+     * 发起同步网络请求
+     * @param response HTTP请求实体{@link org.apache.http.client.methods.HttpRequestBase}
+     * @return 网络请求数据读取通道{@link com.lidroid.xutils.http.ResponseStream}
+     * @throws HttpException 网络请求异常{@link com.lidroid.xutils.exception.HttpException}
+     * @throws IOException IO异常{@link java.io.IOException}
+     */
     private ResponseStream handleResponse(HttpResponse response) throws HttpException, IOException {
         if (response == null) {
             throw new HttpException("response is null");
@@ -125,4 +153,5 @@ public class SyncHttpHandler {
         }
         return null;
     }
+    
 }

@@ -21,19 +21,38 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 二级键值对
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-6-19
  * Time: PM 1:18
+ * </pre>
+ * 
+ * @param <K1> 一级键值
+ * @param <K2> 二级键值
+ * @param <V> 数据
+ * 
+ * @author wyouflf
  */
 public class DoubleKeyValueMap<K1, K2, V> {
 
     private ConcurrentHashMap<K1, ConcurrentHashMap<K2, V>> k1_k2V_map;
 
+    /**
+     * 构造二级键值对
+     */
     public DoubleKeyValueMap() {
         this.k1_k2V_map = new ConcurrentHashMap<K1, ConcurrentHashMap<K2, V>>();
     }
 
+    /**
+     * 添加记录
+     * @param key1 一级键值
+     * @param key2 二级键值
+     * @param value 数据
+     */
     public void put(K1 key1, K2 key2, V value) {
         if (key1 == null || key2 == null || value == null) return;
         if (k1_k2V_map.containsKey(key1)) {
@@ -52,24 +71,48 @@ public class DoubleKeyValueMap<K1, K2, V> {
         }
     }
 
+    /**
+     * 获取一级键值集合
+     * @return 一级键值集合{@link java.util.Set}
+     */
     public Set<K1> getFirstKeys() {
         return k1_k2V_map.keySet();
     }
 
+    /**
+     * 获取二级键值对集合
+     * @param key1 一级键值
+     * @return 二级键值对集合{@link java.util.concurrent.ConcurrentHashMap}
+     */
     public ConcurrentHashMap<K2, V> get(K1 key1) {
         return k1_k2V_map.get(key1);
     }
 
+    /**
+     * 获取数据
+     * @param key1 一级键值
+     * @param key2 二级键值
+     * @return 数据
+     */
     public V get(K1 key1, K2 key2) {
         ConcurrentHashMap<K2, V> k2_v = k1_k2V_map.get(key1);
         return k2_v == null ? null : k2_v.get(key2);
     }
 
+    /**
+     * 获取一级键值对应的所有数据
+     * @param key1 一级键值
+     * @return 数据集合{@link java.util.Collection}
+     */
     public Collection<V> getAllValues(K1 key1) {
         ConcurrentHashMap<K2, V> k2_v = k1_k2V_map.get(key1);
         return k2_v == null ? null : k2_v.values();
     }
 
+    /**
+     * 获取所有的数据
+     * @return 数据集合{@link java.util.Collection}
+     */
     public Collection<V> getAllValues() {
         Collection<V> result = null;
         Set<K1> k1Set = k1_k2V_map.keySet();
@@ -85,6 +128,12 @@ public class DoubleKeyValueMap<K1, K2, V> {
         return result;
     }
 
+    /**
+     * 判断是否存在该键值
+     * @param key1 一级键值
+     * @param key2 二级键值
+     * @return 是否存在该键值
+     */
     public boolean containsKey(K1 key1, K2 key2) {
         if (k1_k2V_map.containsKey(key1)) {
             return k1_k2V_map.get(key1).containsKey(key2);
@@ -92,10 +141,19 @@ public class DoubleKeyValueMap<K1, K2, V> {
         return false;
     }
 
+    /**
+     * 判断是否存在该键值
+     * @param key1 一级键值
+     * @return 是否存在该键值
+     */
     public boolean containsKey(K1 key1) {
         return k1_k2V_map.containsKey(key1);
     }
 
+    /**
+     * 所有数据的总数量（即value的数量）
+     * @return 数据的总数量
+     */
     public int size() {
         if (k1_k2V_map.size() == 0) return 0;
 
@@ -106,10 +164,19 @@ public class DoubleKeyValueMap<K1, K2, V> {
         return result;
     }
 
+    /**
+     * 删除键值对应的数据
+     * @param key1 一级键值
+     */
     public void remove(K1 key1) {
         k1_k2V_map.remove(key1);
     }
 
+    /**
+     * 删除键值对应的数据
+     * @param key1 一级键值
+     * @param key2 二级键值
+     */
     public void remove(K1 key1, K2 key2) {
         ConcurrentHashMap<K2, V> k2_v = k1_k2V_map.get(key1);
         if (k2_v != null) {
@@ -117,6 +184,9 @@ public class DoubleKeyValueMap<K1, K2, V> {
         }
     }
 
+    /**
+     * 清空所有数据
+     */
     public void clear() {
         if (k1_k2V_map.size() > 0) {
             for (ConcurrentHashMap<K2, V> k2V_map : k1_k2V_map.values()) {
@@ -125,4 +195,5 @@ public class DoubleKeyValueMap<K1, K2, V> {
             k1_k2V_map.clear();
         }
     }
+    
 }

@@ -26,7 +26,11 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 /**
+ * 网络请求参数实体的数据流解压器的通用基类（实现自{@link org.apache.http.HttpEntity}）
+ * 
+ * <pre>
  * Common base class for decompressing {@link org.apache.http.HttpEntity} implementations.
+ * </pre>
  *
  * @since 4.1
  */
@@ -39,17 +43,27 @@ abstract class DecompressingEntity extends HttpEntityWrapper implements UploadEn
     private InputStream content;
 
     /**
-     * Creates a new {@link DecompressingEntity}.
-     *
-     * @param wrapped the non-null {@link org.apache.http.HttpEntity} to be wrapped
+     * 构造数据流解压器（包装请求参数实体）
+     * @param wrapped 非空的网络请求参数实体{@link org.apache.http.HttpEntity}
      */
     public DecompressingEntity(final HttpEntity wrapped) {
         super(wrapped);
         this.uncompressedLength = wrapped.getContentLength();
     }
 
+    /**
+     * 解压数据流
+     * @param wrapped 需要解压的数据流{@link java.io.InputStream}
+     * @return 解压后的IO数据流{@link java.io.InputStream}
+     * @throws IOException
+     */
     abstract InputStream decorate(final InputStream wrapped) throws IOException;
 
+    /**
+     * 获取解压后的数据流
+     * @return 解压后的IO数据流{@link java.io.InputStream}
+     * @throws IOException IO流操作异常
+     */
     private InputStream getDecompressingStream() throws IOException {
         InputStream in = null;
         try {
@@ -62,7 +76,14 @@ abstract class DecompressingEntity extends HttpEntityWrapper implements UploadEn
     }
 
     /**
-     * {@inheritDoc}
+     * 获取解压后的数据流
+     * 
+     * <pre>
+     * 如果包装的参数实体是流，则缓存解压后的数据流
+     * </pre>
+     * 
+     * @return 解压后的IO数据流{@link java.io.InputStream}
+     * @throws IOException IO流操作异常
      */
     @Override
     public InputStream getContent() throws IOException {
@@ -78,6 +99,10 @@ abstract class DecompressingEntity extends HttpEntityWrapper implements UploadEn
 
     private long uncompressedLength;
 
+    /**
+     * 压缩的内容长度是不可知的
+     * @return <code>-1</code>
+     */
     @Override
     public long getContentLength() {
         /* length of compressed content is not known */
@@ -87,7 +112,9 @@ abstract class DecompressingEntity extends HttpEntityWrapper implements UploadEn
     private long uploadedSize = 0;
 
     /**
-     * {@inheritDoc}
+     * 将内容写入到输出流
+     * @param outStream IO输出流 {@link java.io.OutputStream}
+     * @throws IOException IO流操作异常{@link java.io.IOException}
      */
     @Override
     public void writeTo(OutputStream outStream) throws IOException {
@@ -124,4 +151,5 @@ abstract class DecompressingEntity extends HttpEntityWrapper implements UploadEn
     public void setCallBackHandler(RequestCallBackHandler callBackHandler) {
         this.callBackHandler = callBackHandler;
     }
+    
 }

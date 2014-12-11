@@ -15,18 +15,31 @@
 
 package com.lidroid.xutils.task;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import com.lidroid.xutils.util.LogUtils;
 
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
+ * 可调度优先级的异步任务
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 14-5-23
  * Time: 上午11:25
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public abstract class PriorityAsyncTask<Params, Progress, Result> implements TaskHandler {
 
@@ -34,7 +47,9 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     private static final int MESSAGE_POST_PROGRESS = 0x2;
 
     private static final InternalHandler sHandler = new InternalHandler();
-
+    /**
+     * 默认线程池（可调度优先级的线程池）
+     */
     public static final Executor sDefaultExecutor = new PriorityExecutor();
     private final WorkerRunnable<Params, Result> mWorker;
     private final FutureTask<Result> mFuture;
@@ -46,16 +61,33 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
 
     private Priority priority;
 
+    /**
+     * 获取线程优先级
+     * @return 线程优先级{@link com.lidroid.xutils.task.Priority}
+     */
     public Priority getPriority() {
         return priority;
     }
 
+    /**
+     * 设置线程优先级
+     * @param priority 线程优先级{@link com.lidroid.xutils.task.Priority}
+     */
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
     /**
+     * 构造可调度优先级的异步任务
+     * 
+     * <pre>
+     * 创建一个新的异步任务，此构造函数必须在UI线程中调用。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
+     * </pre>
      */
     public PriorityAsyncTask() {
         mWorker = new WorkerRunnable<Params, Result>() {
@@ -101,82 +133,109 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
-     * Override this method to perform a computation on a background thread. The
-     * specified parameters are the parameters passed to {@link #execute}
+     * 后台任务处理
+     * 
+     * <pre>
+     * 重写此方法，以便在后台执行处理；
+     * 接收的参数通过调用方法{@link #execute(Object...)}时传入；
+     * 这个方法会调用方法{@link #publishProgress(Object...)}在UI线程通知进度更新。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
+     * Override this method to perform a computation on a background thread.
+     * The specified parameters are the parameters passed to {@link #execute}
      * by the caller of this task.
      * <p/>
      * This method can call {@link #publishProgress} to publish updates
      * on the UI thread.
-     *
-     * @param params The parameters of the task.
-     * @return A result, defined by the subclass of this task.
+     * </pre>
+     * 
+     * @param params 接收的参数
+     * @return 返回的数据，由该类的子类定义
      * @see #onPreExecute()
-     * @see #onPostExecute
-     * @see #publishProgress
+     * @see #onPostExecute(Object)
+     * @see #publishProgress(Object...)
      */
+    @SuppressWarnings("unchecked")
     protected abstract Result doInBackground(Params... params);
 
     /**
-     * Runs on the UI thread before {@link #doInBackground}.
-     *
-     * @see #onPostExecute
-     * @see #doInBackground
+     * 在方法{@link #doInBackground(Object...)}调用之前，UI线程上执行
+     * @see #onPostExecute(Object)
+     * @see #doInBackground(Object...)
      */
     protected void onPreExecute() {
     }
 
     /**
-     * <p>Runs on the UI thread after {@link #doInBackground}. The
-     * specified result is the value returned by {@link #doInBackground}.</p>
-     * <p/>
-     * <p>This method won't be invoked if the task was cancelled.</p>
+     * 在方法{@link #doInBackground(Object...)}调用之后，UI线程上执行
+     * 
+     * <pre>
+     * Runs on the UI thread after {@link #doInBackground}.
+     * The specified result is the value returned by {@link #doInBackground}.
+     * This method won't be invoked if the task was cancelled.
+     * </pre>
      *
-     * @param result The result of the operation computed by {@link #doInBackground}.
-     * @see #onPreExecute
-     * @see #doInBackground
+     * @param result 接收的参数（由方法{@link #doInBackground(Object...)}返回的数据）
+     * @see #onPreExecute()
+     * @see #doInBackground(Object...)
      * @see #onCancelled(Object)
      */
-    @SuppressWarnings({"UnusedDeclaration"})
     protected void onPostExecute(Result result) {
     }
 
     /**
+     * 在方法{@link #publishProgress(Object...)}调用之后，UI线程上执行
+     * 
+     * <pre>
      * Runs on the UI thread after {@link #publishProgress} is invoked.
      * The specified values are the values passed to {@link #publishProgress}.
+     * </pre>
      *
-     * @param values The values indicating progress.
-     * @see #publishProgress
-     * @see #doInBackground
+     * @param values 标识进度的值
+     * @see #publishProgress(Object...)
+     * @see #doInBackground(Object...)
      */
-    @SuppressWarnings({"UnusedDeclaration"})
+    @SuppressWarnings("unchecked")
     protected void onProgressUpdate(Progress... values) {
     }
 
     /**
-     * <p>Runs on the UI thread after {@link #cancel(boolean)} is invoked and
-     * {@link #doInBackground(Object[])} has finished.</p>
-     * <p/>
-     * <p>The default implementation simply invokes {@link #onCancelled()} and
+     * 在方法{@link #cancel(boolean)}调用之后，UI线程上执行
+     * 
+     * <pre>
+     * Runs on the UI thread after {@link #cancel(boolean)} is invoked and
+     * {@link #doInBackground(Object[])} has finished.
+     * 
+     * The default implementation simply invokes {@link #onCancelled()} and
      * ignores the result. If you write your own implementation, do not call
-     * <code>super.onCancelled(result)</code>.</p>
+     * <code>super.onCancelled(result)</code>.
+     * </pre>
      *
-     * @param result The result, if any, computed in
-     *               {@link #doInBackground(Object[])}, can be null
+     * @param result 接收的参数(可能为空)（由方法{@link #doInBackground(Object...)}返回的数据）
      * @see #cancel(boolean)
      * @see #isCancelled()
      */
-    @SuppressWarnings({"UnusedParameters"})
     protected void onCancelled(Result result) {
         onCancelled();
     }
 
     /**
+     * {@link #onCancelled(Object)}的默认实现
+     * 
+     * <pre>
+     * 最好重写该方法，它是{@link #onCancelled(Object)}的默认实现
+     * </pre>
+     * 
+     * <pre>
      * <p>Applications should preferably override {@link #onCancelled(Object)}.
      * This method is invoked by the default implementation of
      * {@link #onCancelled(Object)}.</p>
      * <p/>
      * <p>Runs on the UI thread after {@link #cancel(boolean)} is invoked and
      * {@link #doInBackground(Object[])} has finished.</p>
+     * </pre>
      *
      * @see #onCancelled(Object)
      * @see #cancel(boolean)
@@ -186,12 +245,21 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
+     * 判断任务是否已取消
+     * 
+     * <pre>
+     * 如果在这个任务完成之前取消它，返回true；
+     * 如果你调用{@link #cancel(boolean)}，该方法的返回值应该在{@link #doInBackground(Object...)}定时检查，以便尽快结束任务。
+     * </pre>
+     * 
+     * <pre>
      * Returns <tt>true</tt> if this task was cancelled before it completed
      * normally. If you are calling {@link #cancel(boolean)} on the task,
      * the value returned by this method should be checked periodically from
      * {@link #doInBackground(Object[])} to end the task as soon as possible.
+     * </pre>
      *
-     * @return <tt>true</tt> if task was cancelled before it completed
+     * @return 如果任务完成之前取消，返回true
      * @see #cancel(boolean)
      */
     @Override
@@ -200,12 +268,9 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
-     * @param mayInterruptIfRunning <tt>true</tt> if the thread executing this
-     *                              task should be interrupted; otherwise, in-progress tasks are allowed
-     *                              to complete.
-     * @return <tt>false</tt> if the task could not be cancelled,
-     * typically because it has already completed normally;
-     * <tt>true</tt> otherwise
+     * 取消任务
+     * @param mayInterruptIfRunning true:任务在执行则中断；false:任务可以继续执行完成
+     * @return false:任务不能取消（通常是任务已执行完成）
      * @see #isCancelled()
      * @see #onCancelled(Object)
      */
@@ -248,31 +313,36 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
-     * Waits if necessary for the computation to complete, and then
-     * retrieves its result.
+     * 等待任务完成，获取执行结果
+     * 
+     * <pre>
+     * Waits if necessary for the computation to complete,
+     * and then retrieves its result.
+     * </pre>
      *
-     * @return The computed result.
-     * @throws java.util.concurrent.CancellationException If the computation was cancelled.
-     * @throws java.util.concurrent.ExecutionException    If the computation threw an exception.
-     * @throws InterruptedException                       If the current thread was interrupted
-     *                                                    while waiting.
+     * @return 执行结果
+     * @throws java.util.concurrent.CancellationException 如果任务被取消了
+     * @throws java.util.concurrent.ExecutionException    如果任务执行出现异常
+     * @throws InterruptedException                       如果当前任务中断了
      */
     public final Result get() throws InterruptedException, ExecutionException {
         return mFuture.get();
     }
 
     /**
-     * Waits if necessary for at most the given time for the computation
-     * to complete, and then retrieves its result.
+     * 给定的时间内等待任务完成，获取执行结果
+     * 
+     * <pre>
+     * Waits if necessary for at most the given time for the computation to complete,
+     * and then retrieves its result.
+     * </pre>
      *
-     * @param timeout Time to wait before cancelling the operation.
-     * @param unit    The time unit for the timeout.
-     * @return The computed result.
-     * @throws java.util.concurrent.CancellationException If the computation was cancelled.
-     * @throws java.util.concurrent.ExecutionException    If the computation threw an exception.
-     * @throws InterruptedException                       If the current thread was interrupted
-     *                                                    while waiting.
-     * @throws java.util.concurrent.TimeoutException      If the wait timed out.
+     * @param timeout 取消操作前的等待时间
+     * @param unit 超时时间单位
+     * @return 执行结果
+     * @throws java.util.concurrent.CancellationException 如果任务被取消了
+     * @throws java.util.concurrent.ExecutionException    如果任务执行出现异常
+     * @throws InterruptedException                       如果当前任务中断了
      */
     public final Result get(long timeout, TimeUnit unit) throws InterruptedException,
             ExecutionException, TimeoutException {
@@ -280,23 +350,40 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
-     * @param params The parameters of the task.
-     * @return This instance of AsyncTask.
-     * @throws IllegalStateException If execute has invoked.
-     * @see #executeOnExecutor(java.util.concurrent.Executor, Object[])
+     * 执行任务处理
+     * 
+     * <pre>
+     * 每个实例只能调用一次；
+     * 除首次调用外，均抛出异常{@link java.lang.IllegalStateException}；
+     * 实际调用{@code #executeOnExecutor(sDefaultExecutor, params)}
+     * </pre>
+     * 
+     * @param params 任务参数
+     * @return 当前实例
+     * @throws IllegalStateException 当前正在执行任务时，抛出异常
+     * @see #executeOnExecutor(Executor, Object...)
      * @see #execute(Runnable)
      */
+    @SuppressWarnings("unchecked")
     public final PriorityAsyncTask<Params, Progress, Result> execute(Params... params) {
         return executeOnExecutor(sDefaultExecutor, params);
     }
 
     /**
-     * @param exec   The executor to use.
-     * @param params The parameters of the task.
-     * @return This instance of AsyncTask.
-     * @throws IllegalStateException If execute has invoked.
-     * @see #execute(Object[])
+     * 执行任务处理
+     * 
+     * <pre>
+     * 每个实例只能调用一次；
+     * 除首次调用外，均抛出异常{@link java.lang.IllegalStateException}。
+     * </pre>
+     * 
+     * @param exec 任务处理线程池{@link java.util.concurrent.Executor}
+     * @param params 任务参数
+     * @return 当前实例
+     * @throws IllegalStateException 当前正在执行任务时，抛出异常
+     * @see #execute(Object...)
      */
+    @SuppressWarnings("unchecked")
     public final PriorityAsyncTask<Params, Progress, Result> executeOnExecutor(Executor exec,
                                                                                Params... params) {
         if (mExecuteInvoked) {
@@ -315,30 +402,41 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
     }
 
     /**
+     * 方便地执行{@link java.lang.Runnable}
+     * 
+     * <pre>
      * Convenience version of {@link #execute(Object...)} for use with
      * a simple Runnable object. See {@link #execute(Object[])} for more
      * information on the order of execution.
+     * </pre>
      *
-     * @see #execute(Object[])
-     * @see #executeOnExecutor(java.util.concurrent.Executor, Object[])
+     * @see #execute(Object...)
+     * @see #executeOnExecutor(java.util.concurrent.Executor, Object...)
      */
     public static void execute(Runnable runnable) {
         execute(runnable, Priority.DEFAULT);
     }
 
     /**
+     * 方便地执行{@link java.lang.Runnable}
+     * 
+     * <pre>
      * Convenience version of {@link #execute(Object...)} for use with
      * a simple Runnable object. See {@link #execute(Object[])} for more
      * information on the order of execution.
+     * </pre>
      *
-     * @see #execute(Object[])
-     * @see #executeOnExecutor(java.util.concurrent.Executor, Object[])
+     * @see #execute(Object...)
+     * @see #executeOnExecutor(java.util.concurrent.Executor, Object...)
      */
     public static void execute(Runnable runnable, Priority priority) {
         sDefaultExecutor.execute(new PriorityRunnable(priority, runnable));
     }
 
     /**
+     * 在UI线程通知进度更新
+     * 
+     * <pre>
      * This method can be invoked from {@link #doInBackground} to
      * publish updates on the UI thread while the background computation is
      * still running. Each call to this method will trigger the execution of
@@ -346,11 +444,13 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
      * <p/>
      * {@link #onProgressUpdate} will note be called if the task has been
      * canceled.
+     * </pre>
      *
-     * @param values The progress values to update the UI with.
-     * @see #onProgressUpdate
-     * @see #doInBackground
+     * @param values 标识更新UI的进度
+     * @see #onProgressUpdate(Object...)
+     * @see #doInBackground(Object...)
      */
+    @SuppressWarnings("unchecked")
     protected final void publishProgress(Progress... values) {
         if (!isCancelled()) {
             sHandler.obtainMessage(MESSAGE_POST_PROGRESS,
@@ -372,7 +472,7 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
             super(Looper.getMainLooper());
         }
 
-        @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+        @SuppressWarnings({"unchecked"})
         @Override
         public void handleMessage(Message msg) {
             AsyncTaskResult<?> result = (AsyncTaskResult<?>) msg.obj;
@@ -392,11 +492,12 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
         Params[] mParams;
     }
 
-    @SuppressWarnings({"RawUseOfParameterizedType"})
     private static class AsyncTaskResult<Data> {
+        @SuppressWarnings("rawtypes")
         final PriorityAsyncTask mTask;
         final Data[] mData;
 
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         AsyncTaskResult(PriorityAsyncTask task, Data... data) {
             mTask = task;
             mData = data;

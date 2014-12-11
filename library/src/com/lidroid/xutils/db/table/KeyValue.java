@@ -15,10 +15,24 @@
 
 package com.lidroid.xutils.db.table;
 
+/**
+ * 键值对模型
+ */
 public class KeyValue {
+    /**
+     * 键
+     */
     public final String key;
+    /**
+     * 值
+     */
     public final Object value;
 
+    /**
+     * 构造键值对
+     * @param key 键
+     * @param value 值
+     */
     public KeyValue(String key, Object value) {
         this.key = key;
         this.value = value;

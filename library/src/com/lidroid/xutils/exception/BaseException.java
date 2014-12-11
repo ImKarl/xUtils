@@ -16,25 +16,45 @@
 package com.lidroid.xutils.exception;
 
 /**
+ * 框架内抛出异常的基类
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-7-24
  * Time: 下午3:00
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class BaseException extends Exception {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 构造异常实例
+     */
     public BaseException() {
     }
-
+    /**
+     * 构造异常实例
+     * @param detailMessage 异常信息描述
+     */
     public BaseException(String detailMessage) {
         super(detailMessage);
     }
-
+    /**
+     * 构造异常实例
+     * @param detailMessage 异常信息描述
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public BaseException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
-
+    /**
+     * 构造异常实例
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public BaseException(Throwable throwable) {
         super(throwable);
     }
+    
 }

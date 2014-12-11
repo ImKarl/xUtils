@@ -23,9 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 首选项点击事件注解
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-16
  * Time: 下午2:37
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -34,5 +40,11 @@ import java.lang.annotation.Target;
         listenerSetter = "setOnPreferenceClickListener",
         methodName = "onPreferenceClick")
 public @interface OnPreferenceClick {
+
+    /**
+     * 要绑定事件的首选项标签名
+     * @return 首选项标签名
+     */
     String[] value();
+    
 }

@@ -27,6 +27,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
+/**
+ * 事件监听管理器
+ */
 public class EventListenerManager {
 
     private EventListenerManager() {
@@ -40,6 +43,14 @@ public class EventListenerManager {
     private final static DoubleKeyValueMap<ViewInjectInfo, Class<?>, Object> listenerCache =
             new DoubleKeyValueMap<ViewInjectInfo, Class<?>, Object>();
 
+    /**
+     * 添加事件
+     * @param finder 控件查找辅助工具
+     * @param info 控件注解信息
+     * @param eventAnnotation 事件注解对象
+     * @param handler 处理器对象（用于注入的对象实例）
+     * @param method 反射的方法对象
+     */
     public static void addEventMethod(
             ViewFinder finder,
             ViewInjectInfo info,
@@ -83,22 +94,43 @@ public class EventListenerManager {
         }
     }
 
+    
+    /**
+     * 动态处理器
+     */
     public static class DynamicHandler implements InvocationHandler {
         private WeakReference<Object> handlerRef;
         private final HashMap<String, Method> methodMap = new HashMap<String, Method>(1);
 
+        /**
+         * 构造动态处理器
+         * @param handler 处理器对象（用于注入的对象实例）
+         */
         public DynamicHandler(Object handler) {
             this.handlerRef = new WeakReference<Object>(handler);
         }
 
+        /**
+         * 添加要执行的方法
+         * @param name 方法名
+         * @param method 反射的方法对象
+         */
         public void addMethod(String name, Method method) {
             methodMap.put(name, method);
         }
 
+        /**
+         * 获取处理器
+         * @return 处理器对象（用于注入的对象实例）
+         */
         public Object getHandler() {
             return handlerRef.get();
         }
 
+        /**
+         * 设置处理器
+         * @param handler 处理器对象（用于注入的对象实例）
+         */
         public void setHandler(Object handler) {
             this.handlerRef = new WeakReference<Object>(handler);
         }
@@ -115,5 +147,6 @@ public class EventListenerManager {
             }
             return null;
         }
+        
     }
 }

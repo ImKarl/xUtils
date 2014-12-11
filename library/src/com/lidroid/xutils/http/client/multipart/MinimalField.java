@@ -16,8 +16,7 @@
 package com.lidroid.xutils.http.client.multipart;
 
 /**
- * Minimal MIME field.
- *
+ * 最小的MIME字段
  * @since 4.0
  */
 class MinimalField {
@@ -31,10 +30,18 @@ class MinimalField {
         this.value = value;
     }
 
+    /**
+     * 获取字段名
+     * @return 字段名
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * 获取字段的值
+     * @return 字段的值
+     */
     public String getBody() {
         return this.value;
     }

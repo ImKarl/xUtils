@@ -22,6 +22,9 @@ import com.lidroid.xutils.util.LogUtils;
 
 import java.io.FileDescriptor;
 
+/**
+ * 图片解码器
+ */
 public class BitmapDecoder {
 
     private static final Object lock = new Object();
@@ -29,6 +32,14 @@ public class BitmapDecoder {
     private BitmapDecoder() {
     }
 
+    /**
+     * 从资源文件解码图片
+     * @param res 资源{@link android.content.res.Resources
+     * @param resId 资源ID
+     * @param maxSize 图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     * @param config Bitmap参数设置{@link android.graphics.Bitmap.Config}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, BitmapSize maxSize, Bitmap.Config config) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -50,6 +61,13 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从文件系统解码图片
+     * @param filename 文件名（文件完整路径）
+     * @param maxSize 图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     * @param config Bitmap参数设置{@link android.graphics.Bitmap.Config}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeSampledBitmapFromFile(String filename, BitmapSize maxSize, Bitmap.Config config) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -71,6 +89,13 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从文件系统解码图片
+     * @param fileDescriptor 文件描述{@link java.io.FileDescriptor}
+     * @param maxSize 图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     * @param config Bitmap参数设置{@link android.graphics.Bitmap.Config}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeSampledBitmapFromDescriptor(FileDescriptor fileDescriptor, BitmapSize maxSize, Bitmap.Config config) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -92,6 +117,13 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从字节码数据解码图片
+     * @param data 字节码数据
+     * @param maxSize 图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
+     * @param config Bitmap参数设置{@link android.graphics.Bitmap.Config}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeSampledBitmapFromByteArray(byte[] data, BitmapSize maxSize, Bitmap.Config config) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -113,6 +145,12 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从资源文件解码图片
+     * @param res 资源{@link android.content.res.Resources
+     * @param resId 资源ID
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeResource(Resources res, int resId) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -127,6 +165,11 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从文件系统解码图片
+     * @param filename 文件名（文件完整路径）
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeFile(String filename) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -141,6 +184,11 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从文件系统解码图片
+     * @param fileDescriptor 文件描述{@link java.io.FileDescriptor}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeFileDescriptor(FileDescriptor fileDescriptor) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -155,6 +203,11 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 从字节码数据解码图片
+     * @param data 字节码数据
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public static Bitmap decodeByteArray(byte[] data) {
         synchronized (lock) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -169,6 +222,13 @@ public class BitmapDecoder {
         }
     }
 
+    /**
+     * 计算合适的缩放比例
+     * @param options 生成图片的可选项
+     * @param maxWidth 最大宽度
+     * @param maxHeight 最大高度
+     * @return 合适的缩放比例inSampleSize
+     */
     public static int calculateInSampleSize(BitmapFactory.Options options, int maxWidth, int maxHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -191,4 +251,5 @@ public class BitmapDecoder {
         }
         return inSampleSize;
     }
+    
 }

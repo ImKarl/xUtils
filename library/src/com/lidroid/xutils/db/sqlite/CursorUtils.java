@@ -22,9 +22,19 @@ import com.lidroid.xutils.util.LogUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 数据库中数据获取工具
+ */
 public class CursorUtils {
 
-    @SuppressWarnings("unchecked")
+    /**
+     * 从数据库查询游标{@link android.database.Cursor}，获取对应实体类实例
+     * @param db 数据库操作工具包{@link com.lidroid.xutils.DbUtils}
+     * @param cursor 游标{@link android.database.Cursor}
+     * @param entityType 实体类类型{@link java.lang.Class}
+     * @param findCacheSequence 序列值
+     * @return 实体类实例
+     */
     public static <T> T getEntity(final DbUtils db, final Cursor cursor, Class<T> entityType, long findCacheSequence) {
         if (db == null || cursor == null) return null;
 
@@ -67,6 +77,11 @@ public class CursorUtils {
         return null;
     }
 
+    /**
+     * 从数据库查询游标{@link android.database.Cursor}，获取所有列的数据
+     * @param cursor 游标{@link android.database.Cursor}
+     * @return 数据库数据模型{@link com.lidroid.xutils.db.table.DbModel}
+     */
     public static DbModel getDbModel(final Cursor cursor) {
         DbModel result = null;
         if (cursor != null) {
@@ -79,6 +94,10 @@ public class CursorUtils {
         return result;
     }
 
+    
+    /**
+     * 数据库序列的值
+     */
     public static class FindCacheSequence {
         private FindCacheSequence() {
         }
@@ -87,6 +106,10 @@ public class CursorUtils {
         private static final String FOREIGN_LAZY_LOADER_CLASS_NAME = ForeignLazyLoader.class.getName();
         private static final String FINDER_LAZY_LOADER_CLASS_NAME = FinderLazyLoader.class.getName();
 
+        /**
+         * 获取序列的值
+         * @return 序列值
+         */
         public static long getSeq() {
             String findMethodCaller = Thread.currentThread().getStackTrace()[4].getClassName();
             if (!findMethodCaller.equals(FOREIGN_LAZY_LOADER_CLASS_NAME) && !findMethodCaller.equals(FINDER_LAZY_LOADER_CLASS_NAME)) {

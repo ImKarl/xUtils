@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A CookieStore impl, it's save cookie to SharedPreferences.
- *
+ * 一种CookieStore实现机制，它保存cookie到SharedPreferences
  * @author michael yang
  */
 public class PreferencesCookieStore implements CookieStore {
@@ -189,16 +188,27 @@ public class PreferencesCookieStore implements CookieStore {
     }
 
 
+    /**
+     * 可序列化的Cookie包装
+     */
     public class SerializableCookie implements Serializable {
         private static final long serialVersionUID = 6374381828722046732L;
 
         private transient final Cookie cookie;
         private transient BasicClientCookie clientCookie;
 
+        /**
+         * 构造可序列化的包装Cookie
+         * @param cookie {@link org.apache.http.cookie.Cookie}
+         */
         public SerializableCookie(Cookie cookie) {
             this.cookie = cookie;
         }
 
+        /**
+         * 获取原始Cookie对象
+         * @return {@link org.apache.http.cookie.Cookie}
+         */
         public Cookie getCookie() {
             Cookie bestCookie = cookie;
             if (clientCookie != null) {
@@ -230,4 +240,5 @@ public class PreferencesCookieStore implements CookieStore {
             clientCookie.setSecure(in.readBoolean());
         }
     }
+    
 }

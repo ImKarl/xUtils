@@ -20,8 +20,27 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 数据库表中主键ID的列注解
+ * 
+ * <pre>
+ * 列名不要使用SQL关键字、SQL保留字符、特殊字符、空格；
+ * 若实体类属性名不是id、_id，必须添加该注解，否则报错；
+ * 默认主键ID为数值自动增长；
+ * 若主键非数值型（int ,Integer,long, Long），请添加注解{@link com.lidroid.xutils.db.annotation.NoAutoIncrement}
+ * </pre>
+ * 
+ * @see com.lidroid.xutils.db.annotation.Column
+ * @see com.lidroid.xutils.db.annotation.NoAutoIncrement
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Id {
+    
+    /**
+     * 数据库的列名
+     * @return 主键ID的列名（不要使用SQL关键字、SQL保留字符、特殊字符、空格）
+     */
     String column() default "";
+    
 }

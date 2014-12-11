@@ -30,7 +30,12 @@ import java.nio.charset.Charset;
 import java.util.Random;
 
 /**
+ * 多个内容主体的HTTP实体
+ * 
+ * <pre>
+ * 原文：
  * Multipart/form coded HTTP entity consisting of multiple body parts.
+ * </pre>
  *
  * @since 4.0
  */
@@ -43,16 +48,29 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
         callBackInfo.callBackHandler = callBackHandler;
     }
 
-    // wyouflf add： upload callBackHandler
+    /**
+     * 上传的回调函数
+     * 
+     * <pre>
+     * 原文：upload callBackHandler
+     * </pre>
+     * 
+     * @author wyouflf
+     */
     public static class CallBackInfo {
+        /** 默认的上传回调函数 */
         public final static CallBackInfo DEFAULT = new CallBackInfo();
+        /** 网络请求进度更新通知接口 */
         public RequestCallBackHandler callBackHandler = null;
+        /** 读取数据总大小（byte） */
         public long totalLength = 0;
+        /** 当前读取数据大小（byte） */
         public long pos = 0;
 
         /**
-         * @param forceUpdateUI
-         * @return Whether continue.
+         * 回调处理函数
+         * @param forceUpdateUI 是否强制更新UI
+         * @return 是否继续执行（true:继续执行，否则取消执行）
          */
         public boolean doCallBack(boolean forceUpdateUI) {
             if (callBackHandler != null) {
@@ -81,7 +99,7 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
     private final Charset charset;
 
     /**
-     * Creates an instance using the specified parameters
+     * 构造多个内容主体的HTTP实体
      *
      * @param mode     the mode to use, may be {@code null}, in which case {@link HttpMultipartMode#STRICT} is used
      * @param boundary the boundary string, may be {@code null}, in which case {@link #generateBoundary()} is invoked to create the string
@@ -108,8 +126,15 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
     }
 
     /**
+     * 构造多个内容主体的HTTP实体
+     * 
+     * <pre>
+     * 使用指定的模式；边界符和字符编码默认设置为{@code null}
+     * 
+     * 原文：
      * Creates an instance using the specified {@link HttpMultipartMode} mode.
      * Boundary and charset are set to {@code null}.
+     * </pre>
      *
      * @param mode the desired mode
      */
@@ -118,7 +143,16 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
     }
 
     /**
+     * 构造多个内容主体的HTTP实体
+     * 
+     * <pre>
+     * 默认的，
+     * 模式：{@link HttpMultipartMode#STRICT}；
+     * 边界符和字符编码默认设置为{@code null}
+     * 
+     * 原文：
      * Creates an instance using mode {@link HttpMultipartMode#STRICT}
+     * </pre>
      */
     public MultipartEntity() {
         this(HttpMultipartMode.STRICT, null, null);
@@ -128,6 +162,7 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
     private String multipartSubtype = "form-data";
 
     /**
+     * 设置协议参数
      * @param multipartSubtype default "form-data"
      */
     public void setMultipartSubtype(String multipartSubtype) {
@@ -161,19 +196,36 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
         return buffer.toString();
     }
 
+    /**
+     * 添加内容主体
+     * @param bodyPart 内容主体组合{@link com.lidroid.xutils.http.client.multipart.FormBodyPart}
+     */
     public void addPart(final FormBodyPart bodyPart) {
         this.multipart.addBodyPart(bodyPart);
         this.dirty = true;
     }
-
+    /**
+     * 添加内容主体
+     * @param name 参数名
+     * @param contentBody 内容主体{@link com.lidroid.xutils.http.client.multipart.content.ContentBody}
+     */
     public void addPart(final String name, final ContentBody contentBody) {
         addPart(new FormBodyPart(name, contentBody));
     }
-
+    /**
+     * 添加内容主体
+     * @param name 参数名
+     * @param contentBody 内容主体{@link com.lidroid.xutils.http.client.multipart.content.ContentBody}
+     * @param contentDisposition 内容描述符
+     */
     public void addPart(final String name, final ContentBody contentBody, final String contentDisposition) {
         addPart(new FormBodyPart(name, contentBody, contentDisposition));
     }
 
+    /**
+     * 判断该参数实体是否可重复
+     * @return 是否可重复
+     */
     public boolean isRepeatable() {
         for (FormBodyPart part : this.multipart.getBodyParts()) {
             ContentBody body = part.getBody();
@@ -184,14 +236,26 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
         return true;
     }
 
+    /**
+     * 判断是否为块
+     * @return 是否为块
+     */
     public boolean isChunked() {
         return !isRepeatable();
     }
 
+    /**
+     * 判断该参数实体是否为数据流
+     * @return 是否为数据流
+     */
     public boolean isStreaming() {
         return !isRepeatable();
     }
 
+    /**
+     * 获取参数内容的长度
+     * @return 参数内容的长度（单位：byte）
+     */
     public long getContentLength() {
         if (this.dirty) {
             this.length = this.multipart.getTotalLength();
@@ -200,10 +264,18 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
         return this.length;
     }
 
+    /**
+     * 获取CONTENT-TYPE头信息
+     * @return CONTENT-TYPE头信息{@link org.apache.http.Header}
+     */
     public Header getContentType() {
         return this.contentType;
     }
 
+    /**
+     * 获取CONTENT-ENCODING头信息
+     * @return {@code null}
+     */
     public Header getContentEncoding() {
         return null;
     }
@@ -225,4 +297,5 @@ public class MultipartEntity implements HttpEntity, UploadEntity {
         callBackInfo.totalLength = getContentLength();
         this.multipart.writeTo(outStream, callBackInfo);
     }
+    
 }

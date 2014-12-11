@@ -5,11 +5,18 @@ import android.text.TextUtils;
 import com.lidroid.xutils.db.sqlite.ColumnDbType;
 
 /**
+ * 数据库列的数据转换器（布尔型）
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-11-4
  * Time: 下午10:51
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class BooleanColumnConverter implements ColumnConverter<Boolean> {
+    
     @Override
     public Boolean getFieldValue(final Cursor cursor, int index) {
         return cursor.isNull(index) ? null : cursor.getInt(index) == 1;
@@ -31,4 +38,5 @@ public class BooleanColumnConverter implements ColumnConverter<Boolean> {
     public ColumnDbType getColumnDbType() {
         return ColumnDbType.INTEGER;
     }
+    
 }

@@ -21,7 +21,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Body part that is built using a byte array containing a file.
+ * 字节数组包裹的网络请求文件内容主体
+ * 
+ * <pre>
+ * 原文：Body part that is built using a byte array containing a file.
+ * </pre>
  *
  * @since 4.1
  */
@@ -38,11 +42,16 @@ public class ByteArrayBody extends AbstractContentBody {
     private final String filename;
 
     /**
-     * Creates a new ByteArrayBody.
-     *
-     * @param data     The contents of the file contained in this part.
-     * @param mimeType The mime type of the file contained in this part.
-     * @param filename The name of the file contained in this part.
+     * 构造字节数组包裹的文件内容主体
+     * 
+     * <pre>
+     * data为空时，抛出异常{@link java.lang.IllegalArgumentException}
+     * </pre>
+     * 
+     * @param data 包含的数据内容（原文：The contents of the file contained in this part.）
+     * @param mimeType MIME类型（原文：The mime type of the file contained in this part.）
+     * @param filename 文件名（原文：The name of the file contained in this part.）
+     * @see com.lidroid.xutils.http.client.multipart.MIME
      */
     public ByteArrayBody(final byte[] data, final String mimeType, final String filename) {
         super(mimeType);
@@ -54,10 +63,17 @@ public class ByteArrayBody extends AbstractContentBody {
     }
 
     /**
-     * Creates a new ByteArrayBody.
-     *
-     * @param data     The contents of the file contained in this part.
-     * @param filename The name of the file contained in this part.
+     * 构造字节数组包裹的文件内容主体
+     * 
+     * <pre>
+     * data为空时，抛出异常{@link java.lang.IllegalArgumentException}；
+     * 默认：MIME类型（application/octet-stream）
+     * </pre>
+     * 
+     * @param data 包含的数据内容（原文：The contents of the file contained in this part.）
+     * @param mimeType MIME类型（原文：The mime type of the file contained in this part.）
+     * @param filename 文件名（原文：The name of the file contained in this part.）
+     * @see com.lidroid.xutils.http.client.multipart.MIME
      */
     public ByteArrayBody(final byte[] data, final String filename) {
         this(data, "application/octet-stream", filename);
@@ -73,10 +89,18 @@ public class ByteArrayBody extends AbstractContentBody {
         callBackInfo.doCallBack(false);
     }
 
+    /**
+     * 获取字符编码
+     * @return <code>null</code>
+     */
     public String getCharset() {
         return null;
     }
 
+    /**
+     * 获取传输编码
+     * @return "binary"
+     */
     public String getTransferEncoding() {
         return MIME.ENC_BINARY;
     }

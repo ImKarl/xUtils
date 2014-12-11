@@ -15,21 +15,38 @@
 
 package com.lidroid.xutils.exception;
 
+/**
+ * 数据库操作异常
+ */
 public class DbException extends BaseException {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 构造数据库操作异常
+     */
     public DbException() {
     }
-
+    /**
+     * 构造数据库操作异常
+     * @param detailMessage 异常信息描述
+     */
     public DbException(String detailMessage) {
         super(detailMessage);
     }
-
+    /**
+     * 构造数据库操作异常
+     * @param detailMessage 异常信息描述
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public DbException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
-
+    /**
+     * 构造数据库操作异常
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public DbException(Throwable throwable) {
         super(throwable);
     }
+    
 }

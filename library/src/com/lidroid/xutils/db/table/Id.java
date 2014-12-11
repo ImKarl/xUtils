@@ -21,6 +21,9 @@ import com.lidroid.xutils.util.LogUtils;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 
+/**
+ * 数据库表中主键ID的描述
+ */
 public class Id extends Column {
 
     private String columnFieldClassName;
@@ -32,6 +35,10 @@ public class Id extends Column {
         columnFieldClassName = columnField.getType().getName();
     }
 
+    /**
+     * 判断是否自动增长
+     * @return 是否自动增长
+     */
     public boolean isAutoIncrement() {
         if (!isAutoIncrementChecked) {
             isAutoIncrementChecked = true;
@@ -41,6 +48,11 @@ public class Id extends Column {
         return isAutoIncrement;
     }
 
+    /**
+     * 设置自动增长的主键ID值
+     * @param entity 实体类实例
+     * @param value 主键ID值
+     */
     public void setAutoIncrementId(Object entity, long value) {
         Object idValue = value;
         if (INTEGER_TYPES.contains(columnFieldClassName)) {
@@ -87,4 +99,5 @@ public class Id extends Column {
         AUTO_INCREMENT_TYPES.add(long.class.getName());
         AUTO_INCREMENT_TYPES.add(Long.class.getName());
     }
+    
 }

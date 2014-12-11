@@ -33,8 +33,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * A collection of utilities for encoding URLs.
- *
+ * URL转码工具
  * @since 4.0
  */
 public class URLEncodedUtils {
@@ -44,8 +43,9 @@ public class URLEncodedUtils {
     private static final String NAME_VALUE_SEPARATOR = "=";
 
     /**
-     * Returns true if the entity's Content-Type header is
-     * <code>application/x-www-form-urlencoded</code>.
+     * 如果Content-Type头信息是<code>application/x-www-form-urlencoded</code>，返回true
+     * @param entity 网络请求参数实体{@link org.apache.http.HttpEntity}
+     * @return
      */
     public static boolean isEncoded(final HttpEntity entity) {
         Header h = entity.getContentType();

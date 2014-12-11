@@ -17,9 +17,12 @@ package com.lidroid.xutils.bitmap;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import com.lidroid.xutils.BitmapUtils;
+
 import com.lidroid.xutils.task.TaskHandler;
 
+/**
+ * 滚动暂停监听器
+ */
 public class PauseOnScrollListener implements OnScrollListener {
 
     private TaskHandler taskHandler;
@@ -29,24 +32,23 @@ public class PauseOnScrollListener implements OnScrollListener {
     private final OnScrollListener externalListener;
 
     /**
-     * Constructor
+     * 构造滚动暂停监听器
      *
-     * @param taskHandler   {@linkplain BitmapUtils} instance for controlling
-     * @param pauseOnScroll Whether {@linkplain BitmapUtils#pause() pause loading} during touch scrolling
-     * @param pauseOnFling  Whether {@linkplain BitmapUtils#pause() pause loading} during fling
+     * @param taskHandler 任务处理接口{@link com.lidroid.xutils.task.TaskHandler}
+     * @param pauseOnScroll 触摸滚动是否暂停加载
+     * @param pauseOnFling 快速滚动是否暂停加载
      */
     public PauseOnScrollListener(TaskHandler taskHandler, boolean pauseOnScroll, boolean pauseOnFling) {
         this(taskHandler, pauseOnScroll, pauseOnFling, null);
     }
 
     /**
-     * Constructor
+     * 构造滚动暂停监听器
      *
-     * @param taskHandler    {@linkplain BitmapUtils} instance for controlling
-     * @param pauseOnScroll  Whether {@linkplain BitmapUtils#pause() pause loading} during touch scrolling
-     * @param pauseOnFling   Whether {@linkplain BitmapUtils#pause() pause loading} during fling
-     * @param customListener Your custom {@link android.widget.AbsListView.OnScrollListener} for {@linkplain android.widget.AbsListView list view} which also will
-     *                       be get scroll events
+     * @param taskHandler 任务处理接口{@link com.lidroid.xutils.task.TaskHandler}
+     * @param pauseOnScroll 触摸滚动是否暂停加载
+     * @param pauseOnFling 快速滚动是否暂停加载
+     * @param customListener 滑动暂停监听器{@link android.widget.AbsListView.OnScrollListener}
      */
     public PauseOnScrollListener(TaskHandler taskHandler, boolean pauseOnScroll, boolean pauseOnFling, OnScrollListener customListener) {
         this.taskHandler = taskHandler;
@@ -55,6 +57,11 @@ public class PauseOnScrollListener implements OnScrollListener {
         externalListener = customListener;
     }
 
+    /**
+     * 滚动状态改变
+     * @param view 列表控件
+     * @param scrollState 滚动状态
+     */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         switch (scrollState) {
@@ -77,10 +84,18 @@ public class PauseOnScrollListener implements OnScrollListener {
         }
     }
 
+    /**
+     * 滚动事件
+     * @param view 列表控件
+     * @param firstVisibleItem 当前显示的第一项的索引
+     * @param visibleItemCount 当前显示项的总数
+     * @param totalItemCount 可显示项总数
+     */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (externalListener != null) {
             externalListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
         }
     }
+    
 }

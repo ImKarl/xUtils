@@ -36,7 +36,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.UnknownHostException;
 
-
+/**
+ * 网络请求处理器
+ * @param <T> 网络请求返回的数据类型
+ */
 public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> implements RequestCallBackHandler {
 
     private final AbstractHttpClient client;
@@ -44,6 +47,10 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
 
     private HttpRedirectHandler httpRedirectHandler;
 
+    /**
+     * 设置HTTP重定向处理器
+     * @param httpRedirectHandler HTTP重定向处理器（为空时，忽略本次设置）
+     */
     public void setHttpRedirectHandler(HttpRedirectHandler httpRedirectHandler) {
         if (httpRedirectHandler != null) {
             this.httpRedirectHandler = httpRedirectHandler;
@@ -63,6 +70,13 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
     private boolean autoRename = false; // Whether rename the file by response header info when the download completely.
     private String charset; // The default charset of response header info.
 
+    /**
+     * 构造网络请求处理器
+     * @param client HTTP客户端编程工具包{@link org.apache.http.impl.client.AbstractHttpClient}
+     * @param context HTTP请求上下文{@link org.apache.http.protocol.HttpContext}
+     * @param charset HTTP响应头默认编码
+     * @param callback 网络请求回调通知接口
+     */
     public HttpHandler(AbstractHttpClient client, HttpContext context, String charset, RequestCallBack<T> callback) {
         this.client = client;
         this.context = context;
@@ -73,31 +87,50 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
 
     private State state = State.WAITING;
 
+    /**
+     * 获取网络请求状态
+     * @return 网络请求状态{@link com.lidroid.xutils.http.HttpHandler.State}
+     */
     public State getState() {
         return state;
     }
 
     private long expiry = HttpCache.getDefaultExpiryTime();
 
+    /**
+     * 设置缓存过期时长
+     * @param expiry 缓存过期时长
+     */
     public void setExpiry(long expiry) {
         this.expiry = expiry;
     }
 
+    /**
+     * 设置网络请求回调监听
+     * @param callback 网络请求回调通知接口{@link com.lidroid.xutils.http.callback.RequestCallBack}
+     */
     public void setRequestCallBack(RequestCallBack<T> callback) {
         this.callback = callback;
     }
 
+    /**
+     * 获取网络请求回调监听器
+     * @return 网络请求回调监听器{@link com.lidroid.xutils.http.callback.RequestCallBack}
+     */
     public RequestCallBack<T> getRequestCallBack() {
         return this.callback;
     }
 
-    // 执行请求
+    /**
+     * 发起网络请求
+     * @param request 网络请求描述{@link org.apache.http.client.methods.HttpRequestBase}
+     * @return 网络请求响应信息（不为空）{@link com.lidroid.xutils.http.ResponseInfo}
+     * @throws HttpException 网络请求异常{@link com.lidroid.xutils.exception.HttpException}
+     */
     @SuppressWarnings("unchecked")
     private ResponseInfo<T> sendRequest(HttpRequestBase request) throws HttpException {
-
         HttpRequestRetryHandler retryHandler = client.getHttpRequestRetryHandler();
         while (true) {
-
             if (autoResume && isDownloadingFile) {
                 File downloadFile = new File(fileSavePath);
                 long fileLen = 0;
@@ -267,7 +300,7 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
     }
 
     /**
-     * cancel request task.
+     * 取消网络请求任务
      */
     @Override
     public void cancel() {
@@ -293,6 +326,13 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
 
     private long lastUpdateTime;
 
+    /**
+     * 更新任务进度
+     * @param total 读取数据总大小（byte）
+     * @param current 当前读取数据大小（byte）
+     * @param forceUpdateUI 是否强制更新UI
+     * @return 是否继续执行（true:继续执行，否则取消执行）
+     */
     @Override
     public boolean updateProgress(long total, long current, boolean forceUpdateUI) {
         if (callback != null && this.state != State.CANCELLED) {
@@ -309,8 +349,22 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
         return this.state != State.CANCELLED;
     }
 
+    /**
+     * 网络请求状态
+     */
     public enum State {
-        WAITING(0), STARTED(1), LOADING(2), FAILURE(3), CANCELLED(4), SUCCESS(5);
+        /** 正在等待 */
+        WAITING(0),
+        /** 已开始 */
+        STARTED(1),
+        /** 加载中 */
+        LOADING(2),
+        /** 失败 */
+        FAILURE(3),
+        /** 已取消 */
+        CANCELLED(4),
+        /** 成功 */
+        SUCCESS(5);
         private int value = 0;
 
         State(int value) {

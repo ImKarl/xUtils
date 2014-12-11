@@ -18,15 +18,24 @@ package com.lidroid.xutils.util;
 import android.webkit.MimeTypeMap;
 
 /**
+ * MIME类型处理工具
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-7-26
  * Time: 下午2:31
+ * </pre>
  */
 public class MimeTypeUtils {
 
     private MimeTypeUtils() {
     }
 
+    /**
+     * 获取文件MIME类型
+     * @param fileName 文件名（文件完整路径）
+     * @return MIME类型{@link com.lidroid.xutils.http.client.multipart.MIME}
+     */
     public static String getMimeType(final String fileName) {
         String result = "application/octet-stream";
         int extPos = fileName.lastIndexOf(".");
@@ -36,4 +45,5 @@ public class MimeTypeUtils {
         }
         return result;
     }
+    
 }

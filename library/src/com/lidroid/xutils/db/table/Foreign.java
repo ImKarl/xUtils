@@ -26,9 +26,13 @@ import com.lidroid.xutils.util.LogUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 
+/**
+ * 数据库表的从表关联列的描述
+ */
 public class Foreign extends Column {
 
     private final String foreignColumnName;
+    @SuppressWarnings("rawtypes")
     private final ColumnConverter foreignColumnConverter;
 
     /* package */ Foreign(Class<?> entityType, Field field) {
@@ -40,15 +44,22 @@ public class Foreign extends Column {
         foreignColumnConverter = ColumnConverterFactory.getColumnConverter(foreignColumnType);
     }
 
+    /**
+     * 获取该关联列的列名
+     * @return 关联列的列名
+     */
     public String getForeignColumnName() {
         return foreignColumnName;
     }
 
+    /**
+     * 获取该关联列对应的主表实体类类型
+     * @return 实体类类型{@link java.lang.Class}
+     */
     public Class<?> getForeignEntityType() {
         return ColumnUtils.getForeignEntityType(this);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void setValue2Entity(Object entity, Cursor cursor, int index) {
         Object fieldValue = foreignColumnConverter.getFieldValue(cursor, index);
@@ -88,7 +99,6 @@ public class Foreign extends Column {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object getColumnValue(Object entity) {
         Object fieldValue = getFieldValue(entity);
@@ -149,12 +159,12 @@ public class Foreign extends Column {
     }
 
     /**
-     * It always return null.
-     *
-     * @return null
+     * 获取数据库列的默认值（永远返回null）
+     * @return null（永远返回null）
      */
     @Override
     public Object getDefaultValue() {
         return null;
     }
+    
 }

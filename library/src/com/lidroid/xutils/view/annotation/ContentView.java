@@ -20,8 +20,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Activity使用的布局文件注解
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ContentView {
+    
+    /**
+     * Activity要绑定的布局文件ID
+     * @return 布局文件ID
+     */
     int value();
+    
 }

@@ -20,10 +20,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
+ * HTTP重定向处理器的默认实现
+ * 
+ * <pre>
  * Created with IntelliJ IDEA.
  * User: wyouflf
  * Date: 13-7-17
  * Time: 上午10:41
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class DefaultHttpRedirectHandler implements HttpRedirectHandler {
     @Override

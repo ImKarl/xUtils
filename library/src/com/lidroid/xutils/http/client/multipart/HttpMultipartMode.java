@@ -16,15 +16,18 @@
 package com.lidroid.xutils.http.client.multipart;
 
 /**
+ * HTTP模式
  * @since 4.0
  */
 public enum HttpMultipartMode {
 
     /**
+     * 严格模式
      * RFC 822, RFC 2045, RFC 2046 compliant
      */
     STRICT,
     /**
+     * 浏览器兼容模式
      * browser-compatible mode, i.e. only write Content-Disposition; use content charset
      */
     BROWSER_COMPATIBLE

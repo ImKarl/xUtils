@@ -31,6 +31,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * LRU算法实现的磁盘缓存管理器
+ * 
+ * @param <K> 索引键
+ * @param <V> 数据
+ * 
+ * <p>
  * A cache that uses a bounded amount of space on a filesystem. Each cache
  * entry has a string key and a fixed number of values. Values are byte sequences,
  * accessible as streams or files. Each value must be between {@code 0} and
@@ -72,6 +78,7 @@ import java.util.concurrent.TimeUnit;
  * an error occurs while writing a cache value, the edit will fail silently.
  * Callers should handle other problems by catching {@code IOException} and
  * responding appropriately.
+ * </p>
  */
 public final class LruDiskCache implements Closeable {
     static final String JOURNAL_FILE = "journal";
@@ -687,7 +694,7 @@ public final class LruDiskCache implements Closeable {
     }
 
     /**
-     * Force buffered operations to the filesystem.
+     * 强制清空文件系统缓冲区数据
      */
     public synchronized void flush() throws IOException {
         checkNotClosed();
@@ -696,7 +703,7 @@ public final class LruDiskCache implements Closeable {
     }
 
     /**
-     * Closes this cache. Stored values will remain on the filesystem.
+     * 关闭缓存。存储的数据将保存在文件系统
      */
     @Override
     public synchronized void close() throws IOException {

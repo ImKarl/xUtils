@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 可调控优先级的阻塞队列
+ * @param <E> 队列的项
+ */
 public class PriorityObjectBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
     private static final long serialVersionUID = -6903933977591709194L;
@@ -150,16 +154,34 @@ public class PriorityObjectBlockingQueue<E> extends AbstractQueue<E>
         putLock.unlock();
     }
 
+    /**
+     * 构造可调控优先级的阻塞队列
+     * 
+     * <pre>
+     * 默认初始容量：Integer.MAX_VALUE
+     * </pre>
+     */
     public PriorityObjectBlockingQueue() {
         this(Integer.MAX_VALUE);
     }
-
+    /**
+     * 构造可调控优先级的阻塞队列
+     * @param capacity 初始容量（小于等于0时，抛出异常{@link java.lang.IllegalArgumentException}）
+     */
     public PriorityObjectBlockingQueue(int capacity) {
         if (capacity <= 0) throw new IllegalArgumentException();
         this.capacity = capacity;
         last = head = new Node<E>(null);
     }
-
+    /**
+     * 构造可调控优先级的阻塞队列
+     * 
+     * <pre>
+     * 默认初始容量：Integer.MAX_VALUE
+     * </pre>
+     * 
+     * @param c 队列项集合（如果超出容量，或遇到null值，则停止添加）
+     */
     public PriorityObjectBlockingQueue(Collection<? extends E> c) {
         this(Integer.MAX_VALUE);
         final ReentrantLock putLock = this.putLock;

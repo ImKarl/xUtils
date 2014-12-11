@@ -16,6 +16,7 @@
 package com.lidroid.xutils.http.client.multipart;
 
 import com.lidroid.xutils.http.client.multipart.content.ContentBody;
+
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.ByteArrayOutputStream;
@@ -29,9 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 多个内容主体组合
+ * 
+ * <pre>
+ * 原文：
  * HttpMultipart represents a collection of MIME multipart encoded content bodies. This class is
  * capable of operating either in the strict (RFC 822, RFC 2045, RFC 2046 compliant) or
  * the browser compatible modes.
+ * </pre>
  *
  * @since 4.0
  */
@@ -92,7 +98,8 @@ class HttpMultipart {
     private final HttpMultipartMode mode;
 
     /**
-     * Creates an instance with the specified settings.
+     * 构造多个内容主体的组合
+     * （原文：Creates an instance with the specified settings.）
      *
      * @param subType  mime subtype - must not be {@code null}
      * @param charset  the character set to use. May be {@code null}, in which case {@link MIME#DEFAULT_CHARSET} - i.e. UTF-8 - is used.
@@ -114,10 +121,10 @@ class HttpMultipart {
         this.parts = new ArrayList<FormBodyPart>();
         this.mode = mode;
     }
-
     /**
-     * Creates an instance with the specified settings.
-     * Mode is set to {@link HttpMultipartMode#STRICT}
+     * 构造多个内容主体的组合
+     * （原文：Creates an instance with the specified settings.
+     * Mode is set to {@link HttpMultipartMode#STRICT}）
      *
      * @param subType  mime subtype - must not be {@code null}
      * @param charset  the character set to use. May be {@code null}, in which case {@link MIME#DEFAULT_CHARSET} - i.e. UTF-8 - is used.
@@ -127,31 +134,64 @@ class HttpMultipart {
     public HttpMultipart(final String subType, final Charset charset, final String boundary) {
         this(subType, charset, boundary, HttpMultipartMode.STRICT);
     }
-
+    /**
+     * 构造多个内容主体的组合
+     * @param subType mime subtype - must not be {@code null}
+     * @param boundary to use  - must not be {@code null}
+     */
     public HttpMultipart(final String subType, final String boundary) {
         this(subType, null, boundary);
     }
 
+    /**
+     * Sets the defaulted MIME sub type for this content.
+     * @param subType the MIME media type when content-type is specified,
+     *         otherwise the correct default (<code>PLAIN</code>)
+     */
     public void setSubType(String subType) {
         this.subType = subType;
     }
-
+    /**
+     * Gets the defaulted MIME sub type for this content.
+     *
+     * @return the MIME media type when content-type is specified,
+     *         otherwise the correct default (<code>PLAIN</code>)
+     * @see #getMimeType()
+     * @see com.lidroid.xutils.http.client.multipart.MIME
+     */
     public String getSubType() {
         return this.subType;
     }
 
+    /**
+     * 获取字符编码
+     * @return 字符编码{@link java.nio.charset.Charset}
+     * @see java.nio.charset.Charset
+     */
     public Charset getCharset() {
         return this.charset;
     }
 
+    /**
+     * 获取HTTP模式
+     * @return HTTP模式{@link com.lidroid.xutils.http.client.multipart.HttpMultipartMode}
+     */
     public HttpMultipartMode getMode() {
         return this.mode;
     }
 
+    /**
+     * 获取内容主体组合集
+     * @return 内容主体组合集
+     */
     public List<FormBodyPart> getBodyParts() {
         return this.parts;
     }
 
+    /**
+     * 添加内容主体组合
+     * @param part 内容主体组合{@link com.lidroid.xutils.http.client.multipart.FormBodyPart}
+     */
     public void addBodyPart(final FormBodyPart part) {
         if (part == null) {
             return;
@@ -159,6 +199,10 @@ class HttpMultipart {
         this.parts.add(part);
     }
 
+    /**
+     * 获取协议分隔符
+     * @return 协议分隔符
+     */
     public String getBoundary() {
         return this.boundary;
     }
@@ -241,10 +285,17 @@ class HttpMultipart {
     }
 
     /**
-     * Writes out the content in the multipart/form encoding. This method
-     * produces slightly different formatting depending on its compatibility
-     * mode.
-     *
+     * 将multipart/form encoding内容写入到输出流，根据兼容模式的不同，产生不同的格式
+     * 
+     * <pre>
+     * 原文：
+     * Writes out the content in the multipart/form encoding. 
+     * This method produces slightly different formatting depending on its compatibility mode.
+     * </pre>
+     * 
+     * @param out IO输出流 {@link java.io.OutputStream}
+     * @param callBackInfo 上传回调函数 {@link com.lidroid.xutils.http.client.multipart.MultipartEntity.CallBackInfo}
+     * @throws IOExceptionIO流操作异常{@link java.io.IOException}
      * @see #getMode()
      */
     public void writeTo(final OutputStream out, MultipartEntity.CallBackInfo callBackInfo) throws IOException {

@@ -24,6 +24,7 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 /**
+ * 网络请求的数据流内容主体
  * @since 4.0
  */
 public class InputStreamBody extends AbstractContentBody {
@@ -32,6 +33,14 @@ public class InputStreamBody extends AbstractContentBody {
     private final String filename;
     private long length;
 
+    /**
+     * 构造网络请求的数据流内容主体
+     * @param in IO输入流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     * @param filename 文件名
+     * @param mimeType MIME类型
+     * @see com.lidroid.xutils.http.client.multipart.MIME
+     */
     public InputStreamBody(final InputStream in, long length, final String filename, final String mimeType) {
         super(mimeType);
         if (in == null) {
@@ -41,19 +50,47 @@ public class InputStreamBody extends AbstractContentBody {
         this.filename = filename;
         this.length = length;
     }
-
+    /**
+     * 构造网络请求的数据流内容主体
+     * @param in IO输入流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     * @param filename 文件名
+     */
     public InputStreamBody(final InputStream in, long length, final String filename) {
         this(in, length, filename, "application/octet-stream");
     }
-
+    /**
+     * 构造网络请求的数据流内容主体
+     * 
+     * <pre>
+     * 默认文件名："no_name"，MIME类型："application/octet-stream"
+     * </pre>
+     * 
+     * @param in IO输入流{@link java.io.InputStream}
+     * @param length 数据流的长度
+     */
     public InputStreamBody(final InputStream in, long length) {
         this(in, length, "no_name", "application/octet-stream");
     }
 
+    /**
+     * 获取输入流
+     * @return 输入流{@link java.io.InputStream}
+     */
     public InputStream getInputStream() {
         return this.in;
     }
 
+    /**
+     * 将数据流内容写入到输出流
+     * 
+     * <pre>
+     * out为空时，会抛出异常{@link java.io.OutputStream}
+     * </pre>
+     * 
+     * @param out IO输出流 {@link java.io.OutputStream}
+     * @throws IOExceptionIO流操作异常{@link java.io.IOException}
+     */
     public void writeTo(final OutputStream out) throws IOException {
         if (out == null) {
             throw new IllegalArgumentException("Output stream may not be null");
@@ -74,10 +111,18 @@ public class InputStreamBody extends AbstractContentBody {
         }
     }
 
+    /**
+     * 获取传输编码
+     * @return "binary"
+     */
     public String getTransferEncoding() {
         return MIME.ENC_BINARY;
     }
 
+    /**
+     * 获取字符编码
+     * @return <code>null</code>
+     */
     public String getCharset() {
         return null;
     }

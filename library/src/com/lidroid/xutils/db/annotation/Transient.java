@@ -20,6 +20,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 数据库操作忽略该属性，忽略标识注解
+ * 
+ * <pre>
+ * 忽略后，数据库表中不会创建该列；
+ * 该列的数据不会被保存到数据库；
+ * 静态属性也不会存入数据库
+ * </pre>
+ * 
+ * @see com.lidroid.xutils.db.annotation.Id
+ * @see com.lidroid.xutils.db.annotation.NotNull
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Transient {

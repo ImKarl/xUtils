@@ -15,55 +15,74 @@
 
 package com.lidroid.xutils.exception;
 
+/**
+ * 网络请求异常
+ */
 public class HttpException extends BaseException {
     private static final long serialVersionUID = 1L;
 
     private int exceptionCode;
 
+    /**
+     * 构造网络请求异常
+     */
     public HttpException() {
     }
-
+    /**
+     * 构造网络请求异常
+     * @param detailMessage 异常信息描述
+     */
     public HttpException(String detailMessage) {
         super(detailMessage);
     }
-
+    /**
+     * 构造网络请求异常
+     * @param detailMessage 异常信息描述
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public HttpException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
-
+    /**
+     * 构造网络请求异常
+     * @param throwable 异常内容（包含栈堆跟踪）
+     */
     public HttpException(Throwable throwable) {
         super(throwable);
     }
+    
 
     /**
-     * @param exceptionCode The http response status code, 0 if the http request error and has no response.
+     * 构造网络请求异常
+     * @param exceptionCode HTTP响应状态码（0：表示请求出错，或没有响应）
      */
     public HttpException(int exceptionCode) {
         this.exceptionCode = exceptionCode;
     }
 
     /**
-     * @param exceptionCode The http response status code, 0 if the http request error and has no response.
-     * @param detailMessage
+     * 构造网络请求异常
+     * @param exceptionCode HTTP响应状态码（0：表示请求出错，或没有响应）
+     * @param detailMessage 异常信息描述
      */
     public HttpException(int exceptionCode, String detailMessage) {
         super(detailMessage);
         this.exceptionCode = exceptionCode;
     }
-
     /**
-     * @param exceptionCode The http response status code, 0 if the http request error and has no response.
-     * @param detailMessage
-     * @param throwable
+     * 构造网络请求异常
+     * @param exceptionCode HTTP响应状态码（0：表示请求出错，或没有响应）
+     * @param detailMessage 异常信息描述
+     * @param throwable 异常内容（包含栈堆跟踪）
      */
     public HttpException(int exceptionCode, String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
         this.exceptionCode = exceptionCode;
     }
-
     /**
-     * @param exceptionCode The http response status code, 0 if the http request error and has no response.
-     * @param throwable
+     * 构造网络请求异常
+     * @param exceptionCode HTTP响应状态码（0：表示请求出错，或没有响应）
+     * @param throwable 异常内容（包含栈堆跟踪）
      */
     public HttpException(int exceptionCode, Throwable throwable) {
         super(throwable);
@@ -71,9 +90,11 @@ public class HttpException extends BaseException {
     }
 
     /**
-     * @return The http response status code, 0 if the http request error and has no response.
+     * 获取异常信息代码
+     * @return HTTP响应状态码（0：表示请求出错，或没有响应）
      */
     public int getExceptionCode() {
         return exceptionCode;
     }
+    
 }

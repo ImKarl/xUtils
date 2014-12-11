@@ -4,12 +4,25 @@ import android.content.Context;
 import android.view.animation.AnimationUtils;
 
 /**
+ * 资源文件的内容加载器
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-11-9
  * Time: 下午3:12
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class ResLoader {
 
+    /**
+     * 加载资源文件的内容
+     * @param type 资源文件类型{@link com.lidroid.xutils.view.ResType}
+     * @param context android.content.Context
+     * @param id 资源文件ID
+     * @return 资源文件的内容
+     */
     public static Object loadRes(ResType type, Context context, int id) {
         if (context == null || id < 1) return null;
         switch (type) {
@@ -51,4 +64,5 @@ public class ResLoader {
 
         return null;
     }
+
 }

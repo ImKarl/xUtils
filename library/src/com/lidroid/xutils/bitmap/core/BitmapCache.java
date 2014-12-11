@@ -31,7 +31,9 @@ import com.lidroid.xutils.util.OtherUtils;
 
 import java.io.*;
 
-
+/**
+ * Bitmap位图缓存管理器（内存缓存、磁盘缓存）
+ */
 public class BitmapCache {
 
     private final int DISK_CACHE_INDEX = 0;
@@ -44,9 +46,8 @@ public class BitmapCache {
     private BitmapGlobalConfig globalConfig;
 
     /**
-     * Creating a new ImageCache object using the specified parameters.
-     *
-     * @param globalConfig The cache parameters to use to initialize the cache
+     * 构造Bitmap位图缓存管理器
+     * @param globalConfig 图片加载全局配置项{@link com.lidroid.xutils.bitmap.BitmapGlobalConfig}
      */
     public BitmapCache(BitmapGlobalConfig globalConfig) {
         if (globalConfig == null) throw new IllegalArgumentException("globalConfig may not be null");
@@ -55,7 +56,7 @@ public class BitmapCache {
 
 
     /**
-     * Initialize the memory cache
+     * 初始化内存缓存
      */
     public void initMemoryCache() {
         if (!globalConfig.isMemoryCacheEnabled()) return;
@@ -81,10 +82,24 @@ public class BitmapCache {
     }
 
     /**
+     * 初始化磁盘缓存
+     * 
+     * <pre>
+     * 默认磁盘缓存被创建时，图片缓存不会立即初始化；当需要时，才被初始化。
+     * </pre>
+     * 
+     * <pre>
+     * 注意：这里包括磁盘访问，所以这不应该在主UI线程执行。
+     * 默认情况下，磁盘缓存被创建的时候，图片缓存没有初始化；相反，你应该在后台线程调用initdiskcache()。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
      * Initializes the disk cache.  Note that this includes disk access so this should not be
      * executed on the main/UI thread. By default an ImageCache does not initialize the disk
      * cache when it is created, instead you should call initDiskCache() to initialize it on a
      * background thread.
+     * </pre>
      */
     public void initDiskCache() {
         // Set up disk cache
@@ -108,12 +123,20 @@ public class BitmapCache {
         }
     }
 
+    /**
+     * 设置最大内存缓存大小
+     * @param maxSize 最大内存缓存大小
+     */
     public void setMemoryCacheSize(int maxSize) {
         if (mMemoryCache != null) {
             mMemoryCache.setMaxSize(maxSize);
         }
     }
 
+    /**
+     * 设置最大磁盘缓存大小
+     * @param maxSize 最大磁盘缓存大小
+     */
     public void setDiskCacheSize(int maxSize) {
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null) {
@@ -122,6 +145,10 @@ public class BitmapCache {
         }
     }
 
+    /**
+     * 设置文件名生成器
+     * @param fileNameGenerator 文件名生成器{@link com.lidroid.xutils.cache.FileNameGenerator}
+     */
     public void setDiskCacheFileNameGenerator(FileNameGenerator fileNameGenerator) {
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null && fileNameGenerator != null) {
@@ -130,8 +157,14 @@ public class BitmapCache {
         }
     }
 
+    /**
+     * 下载图片
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
+     * @param task 图片加载任务管理器{@link com.lidroid.xutils.BitmapUtils.BitmapLoadTask}
+     * @return Bitmap位图{@link android.graphics.Bitmap}
+     */
     public Bitmap downloadBitmap(String uri, BitmapDisplayConfig config, final BitmapUtils.BitmapLoadTask<?> task) {
-
         BitmapMeta bitmapMeta = new BitmapMeta();
 
         OutputStream outputStream = null;
@@ -220,11 +253,10 @@ public class BitmapCache {
     }
 
     /**
-     * Get the bitmap from memory cache.
-     *
-     * @param uri    Unique identifier for which item to get
-     * @param config
-     * @return The bitmap if found in cache, null otherwise
+     * 从内存缓存，获取图片
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址（将作为唯一标识符）
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
+     * @return Bitmap位图{@link android.graphics.Bitmap}（如果缓存不存在，则返回null）
      */
     public Bitmap getBitmapFromMemCache(String uri, BitmapDisplayConfig config) {
         if (mMemoryCache != null && globalConfig.isMemoryCacheEnabled()) {
@@ -235,10 +267,9 @@ public class BitmapCache {
     }
 
     /**
-     * Get the bitmap file from disk cache.
-     *
-     * @param uri Unique identifier for which item to get
-     * @return The file if found in cache.
+     * 从磁盘缓存，获取图片
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址（将作为唯一标识符）
+     * @return 图片文件{@link java.io.File}（如果缓存不存在，则返回null）
      */
     public File getBitmapFileFromDiskCache(String uri) {
         synchronized (mDiskCacheLock) {
@@ -251,11 +282,10 @@ public class BitmapCache {
     }
 
     /**
-     * Get the bitmap from disk cache.
-     *
-     * @param uri
-     * @param config
-     * @return
+     * 从磁盘缓存，获取图片
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址（将作为唯一标识符）
+     * @param config 图片显示配置项{@link com.lidroid.xutils.bitmap.BitmapDisplayConfig}
+     * @return Bitmap位图{@link android.graphics.Bitmap}（如果缓存不存在，则返回null）
      */
     public Bitmap getBitmapFromDiskCache(String uri, BitmapDisplayConfig config) {
         if (uri == null || !globalConfig.isDiskCacheEnabled()) return null;
@@ -292,20 +322,40 @@ public class BitmapCache {
     }
 
     /**
-     * Clears both the memory and disk cache associated with this ImageCache object. Note that
-     * this includes disk access so this should not be executed on the main/UI thread.
+     * 清除内存、磁盘缓存
+     * 
+     * <pre>
+     * 清除和这个图片缓存相关的内存、磁盘缓存；
+     * 注意：这里包括磁盘访问，所以这不应该在主UI线程执行。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
+     * Clears both the memory and disk cache associated with this ImageCache object.
+     * Note that this includes disk access so this should not be executed on the main/UI thread.
+     * </pre>
      */
     public void clearCache() {
         clearMemoryCache();
         clearDiskCache();
     }
 
+    /**
+     * 清除内存缓存
+     */
     public void clearMemoryCache() {
         if (mMemoryCache != null) {
             mMemoryCache.evictAll();
         }
     }
-
+    
+    /**
+     * 清除磁盘缓存
+     * 
+     * <pre>
+     * 注意：这里包括磁盘访问，所以这不应该在主UI线程执行。
+     * </pre>
+     */
     public void clearDiskCache() {
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
@@ -322,11 +372,19 @@ public class BitmapCache {
     }
 
 
+    /**
+     * 清除指定URL的内存、磁盘缓存
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     */
     public void clearCache(String uri) {
         clearMemoryCache(uri);
         clearDiskCache(uri);
     }
 
+    /**
+     * 清除指定URL的内存缓存
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     */
     public void clearMemoryCache(String uri) {
         MemoryCacheKey key = new MemoryCacheKey(uri, null);
         if (mMemoryCache != null) {
@@ -336,6 +394,10 @@ public class BitmapCache {
         }
     }
 
+    /**
+     * 清除指定URL的磁盘缓存
+     * @param uri 本地文件完整路径，assets文件路径(assets/xxx)，或者URL地址
+     */
     public void clearDiskCache(String uri) {
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
@@ -349,8 +411,18 @@ public class BitmapCache {
     }
 
     /**
-     * Flushes the disk cache associated with this ImageCache object. Note that this includes
-     * disk access so this should not be executed on the main/UI thread.
+     * 刷新磁盘缓存（强制清空文件系统缓冲区数据）
+     * 
+     * <pre>
+     * 刷新磁盘缓存，强制清空和这个图片缓存相关的文件系统缓冲区数据；
+     * 注意：这里包括磁盘访问，所以这不应该在主UI线程执行。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
+     * Flushes the disk cache associated with this ImageCache object.
+     * Note that this includes disk access so this should not be executed on the main/UI thread.
+     * </pre>
      */
     public void flush() {
         synchronized (mDiskCacheLock) {
@@ -365,8 +437,18 @@ public class BitmapCache {
     }
 
     /**
-     * Closes the disk cache associated with this ImageCache object. Note that this includes
-     * disk access so this should not be executed on the main/UI thread.
+     * 关闭缓存
+     * 
+     * <pre>
+     * 关闭和这个图片缓存相关的磁盘缓存；
+     * 注意：这里包括磁盘访问，所以这不应该在主UI线程执行。
+     * </pre>
+     * 
+     * <pre>
+     * 原文：
+     * Closes the disk cache associated with this ImageCache object.
+     * Note that this includes disk access so this should not be executed on the main/UI thread.
+     * </pre>
      */
     public void close() {
         synchronized (mDiskCacheLock) {
@@ -453,6 +535,11 @@ public class BitmapCache {
         return result;
     }
 
+    
+    
+    /**
+     * 内存缓存键值
+     */
     public class MemoryCacheKey {
         private String uri;
         private String subKey;

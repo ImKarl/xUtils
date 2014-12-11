@@ -15,19 +15,33 @@
 
 package com.lidroid.xutils.util;
 
-import org.apache.http.protocol.HTTP;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.protocol.HTTP;
+
 /**
+ * 字符编码处理-工具类
+ * 
+ * <pre>
  * Created by wyouflf on 13-8-30.
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class CharsetUtils {
 
     private CharsetUtils() {
     }
 
+    /**
+     * 将字符串转换为指定编码
+     * @param str 原始字符串
+     * @param charset 字符编码
+     * @param judgeCharsetLength 预估的字符长度
+     * @return 编码转换后的字符串
+     * @see {@link java.nio.charset.Charset}
+     */
     public static String toCharset(final String str, final String charset, int judgeCharsetLength) {
         try {
             String oldCharset = getEncoding(str, judgeCharsetLength);
@@ -38,6 +52,13 @@ public class CharsetUtils {
         }
     }
 
+    /**
+     * 判断字符串的编码
+     * @param str 原始字符串
+     * @param judgeCharsetLength 预估的字符长度
+     * @return 字符编码
+     * @see {@link java.nio.charset.Charset}
+     */
     public static String getEncoding(final String str, int judgeCharsetLength) {
         String encode = CharsetUtils.DEFAULT_ENCODING_CHARSET;
         for (String charset : SUPPORT_CHARSET) {
@@ -49,6 +70,14 @@ public class CharsetUtils {
         return encode;
     }
 
+    /**
+     * 判断是否指定编码
+     * @param str 原始字符串
+     * @param charset 字符编码
+     * @param judgeCharsetLength 预估的字符长度
+     * @return 是否该字符编码
+     * @see {@link java.nio.charset.Charset}
+     */
     public static boolean isCharset(final String str, final String charset, int judgeCharsetLength) {
         try {
             String temp = str.length() > judgeCharsetLength ? str.substring(0, judgeCharsetLength) : str;
@@ -58,8 +87,14 @@ public class CharsetUtils {
         }
     }
 
+    /**
+     * 默认字符编码（ISO-8859-1）
+     */
     public static final String DEFAULT_ENCODING_CHARSET = HTTP.DEFAULT_CONTENT_CHARSET;
 
+    /**
+     * 支持的字符编码集
+     */
     public static final List<String> SUPPORT_CHARSET = new ArrayList<String>();
 
     static {
@@ -81,4 +116,5 @@ public class CharsetUtils {
 
         SUPPORT_CHARSET.add("UTF-8");
     }
+    
 }

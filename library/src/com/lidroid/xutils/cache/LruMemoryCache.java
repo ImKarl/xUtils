@@ -18,6 +18,12 @@ package com.lidroid.xutils.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * LRU算法实现的内存缓存管理器
+ * 
+ * @param <K> 索引键
+ * @param <V> 数据
+ */
 public class LruMemoryCache<K, V> {
     private final LinkedHashMap<K, V> map;
 

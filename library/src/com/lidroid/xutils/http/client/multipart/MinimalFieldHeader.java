@@ -18,19 +18,30 @@ package com.lidroid.xutils.http.client.multipart;
 import java.util.*;
 
 /**
+ * 最小的字段请求头信息（参考：RFC 2045）
+ * 
+ * <pre>
  * The header of an entity (see RFC 2045).
+ * </pre>
  */
 class MinimalFieldHeader implements Iterable<MinimalField> {
 
     private final List<MinimalField> fields;
     private final Map<String, List<MinimalField>> fieldMap;
 
+    /**
+     * 构造字段请求头信息
+     */
     public MinimalFieldHeader() {
         super();
         this.fields = new LinkedList<MinimalField>();
         this.fieldMap = new HashMap<String, List<MinimalField>>();
     }
 
+    /**
+     * 添加字段请求头信息
+     * @param field 字段请求头信息{@link com.lidroid.xutils.http.client.multipart.MinimalField}
+     */
     public void addField(final MinimalField field) {
         if (field == null) {
             return;
@@ -45,10 +56,19 @@ class MinimalFieldHeader implements Iterable<MinimalField> {
         this.fields.add(field);
     }
 
+    /**
+     * 获取字段请求头信息集合
+     * @return 字段请求头信息集合{@link java.util.List}
+     */
     public List<MinimalField> getFields() {
         return new ArrayList<MinimalField>(this.fields);
     }
 
+    /**
+     * 获取字段请求头信息
+     * @param name 字段名
+     * @return 字段请求头信息{@link com.lidroid.xutils.http.client.multipart.MinimalField}
+     */
     public MinimalField getField(final String name) {
         if (name == null) {
             return null;
@@ -61,6 +81,11 @@ class MinimalFieldHeader implements Iterable<MinimalField> {
         return null;
     }
 
+    /**
+     * 获取字段请求头信息集合
+     * @param name 字段名
+     * @return 字段请求头信息集合{@link java.util.List}
+     */
     public List<MinimalField> getFields(final String name) {
         if (name == null) {
             return null;
@@ -74,6 +99,11 @@ class MinimalFieldHeader implements Iterable<MinimalField> {
         }
     }
 
+    /**
+     * 删除字段请求头信息
+     * @param name 字段名
+     * @return 删除的个数（没有：0）
+     */
     public int removeFields(final String name) {
         if (name == null) {
             return 0;
@@ -87,6 +117,10 @@ class MinimalFieldHeader implements Iterable<MinimalField> {
         return removed.size();
     }
 
+    /**
+     * 设置字段请求头信息
+     * @param field 字段请求头信息{@link com.lidroid.xutils.http.client.multipart.MinimalField}
+     */
     public void setField(final MinimalField field) {
         if (field == null) {
             return;

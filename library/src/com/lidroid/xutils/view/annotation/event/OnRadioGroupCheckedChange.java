@@ -23,9 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 单选按钮组选中项改变事件注解
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-8-16
  * Time: 下午2:36
+ * </pre>
+ * 
+ * @author wyouflf
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -34,7 +40,17 @@ import java.lang.annotation.Target;
         listenerSetter = "setOnCheckedChangeListener",
         methodName = "onCheckedChanged")
 public @interface OnRadioGroupCheckedChange {
+    
+    /**
+     * 要绑定事件的控件ID
+     * @return 控件ID
+     */
     int[] value();
 
+    /**
+     * 所属父控件的ID
+     * @return 控件ID
+     */
     int[] parentId() default 0;
+    
 }

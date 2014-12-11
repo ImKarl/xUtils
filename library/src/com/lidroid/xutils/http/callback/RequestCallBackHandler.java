@@ -15,12 +15,18 @@
 
 package com.lidroid.xutils.http.callback;
 
+/**
+ * 网络请求进度更新通知接口
+ */
 public interface RequestCallBackHandler {
+    
     /**
-     * @param total
-     * @param current
-     * @param forceUpdateUI
-     * @return continue
+     * 更新进度
+     * @param total 数据总大小（byte）
+     * @param current 当前读取大小（byte）
+     * @param forceUpdateUI 是否强制更新UI
+     * @return 是否继续执行（false:取消读取数据，否则继续执行）
      */
     boolean updateProgress(long total, long current, boolean forceUpdateUI);
+    
 }

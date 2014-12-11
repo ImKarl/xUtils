@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * URI生成器
+ */
 public class URIBuilder {
 
     private String scheme;
@@ -44,10 +47,17 @@ public class URIBuilder {
     private String fragment;
     private String encodedFragment;
 
+    /**
+     * 构造URI生成器
+     */
     public URIBuilder() {
         this.port = -1;
     }
-
+    /**
+     * 构造URI生成器
+     * @param uri URI
+     * @see java.net.URI
+     */
     public URIBuilder(final String uri) {
         try {
             digestURI(new URI(uri));
@@ -55,7 +65,11 @@ public class URIBuilder {
             LogUtils.e(e.getMessage(), e);
         }
     }
-
+    /**
+     * 构造URI生成器
+     * @param uri {@link java.net.URI}
+     * @see java.net.URI
+     */
     public URIBuilder(final URI uri) {
         digestURI(uri);
     }
@@ -84,9 +98,8 @@ public class URIBuilder {
     }
 
     /**
-     * Builds a {@link java.net.URI} instance.
-     *
-     * @param charset
+     * 生成一个{@link java.net.URI}实例
+     * @param charset 字符编码
      */
     public URI build(Charset charset) throws URISyntaxException {
         return new URI(buildString(charset));
@@ -154,7 +167,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI scheme.
+     * 设置URI的协议方案
+     * @param scheme 协议方案（如：http、https）
+     * @return 当前实例
      */
     public URIBuilder setScheme(final String scheme) {
         this.scheme = scheme;
@@ -162,8 +177,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI user info. The value is expected to be unescaped and may contain non ASCII
-     * characters.
+     * 设置URI的用户信息（可能包含非ASCII的未转义的预期值）
+     * @param userInfo 用户信息
+     * @return 当前实例
      */
     public URIBuilder setUserInfo(final String userInfo) {
         this.userInfo = userInfo;
@@ -174,15 +190,19 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI user info as a combination of username and password. These values are expected to
-     * be unescaped and may contain non ASCII characters.
+     * 设置URI的用户信息（可能包含非ASCII的未转义的预期值）
+     * @param username 用户名
+     * @param password 密码
+     * @return 当前实例
      */
     public URIBuilder setUserInfo(final String username, final String password) {
         return setUserInfo(username + ':' + password);
     }
 
     /**
-     * Sets URI host.
+     * 设置URI的主机HOST
+     * @param host 主机HOST（如：www.baidu.com）
+     * @return 当前实例
      */
     public URIBuilder setHost(final String host) {
         this.host = host;
@@ -192,7 +212,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI port.
+     * 设置URI的端口
+     * @param port 端口（如：80）
+     * @return 当前实例
      */
     public URIBuilder setPort(final int port) {
         this.port = port < 0 ? -1 : port;
@@ -202,7 +224,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI path. The value is expected to be unescaped and may contain non ASCII characters.
+     * 设置URI的路径
+     * @param path 路径（可能包含非ASCII的未转义的预期值）（如：/api/login）
+     * @return 当前实例
      */
     public URIBuilder setPath(final String path) {
         this.path = path;
@@ -212,9 +236,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI query.
-     * <p/>
-     * The value is expected to be encoded form data.
+     * 设置URI的参数数据
+     * @param query 编码的表单数据预期值（如：name=admin&pass=admin888）
+     * @return 当前实例
      */
     public URIBuilder setQuery(final String query) {
         this.queryParams = parseQuery(query);
@@ -224,8 +248,10 @@ public class URIBuilder {
     }
 
     /**
-     * Adds parameter to URI query. The parameter name and value are expected to be unescaped
-     * and may contain non ASCII characters.
+     * 添加URI参数
+     * @param param 参数名
+     * @param value 参数的值（可能包含非ASCII的未转义的预期值）
+     * @return 当前实例
      */
     public URIBuilder addParameter(final String param, final String value) {
         if (this.queryParams == null) {
@@ -238,8 +264,10 @@ public class URIBuilder {
     }
 
     /**
-     * Sets parameter of URI query overriding existing value if set. The parameter name and value
-     * are expected to be unescaped and may contain non ASCII characters.
+     * 添加URI参数（参数名已存在则覆盖）
+     * @param param 参数名
+     * @param value 参数的值（可能包含非ASCII的未转义的预期值）
+     * @return 当前实例
      */
     public URIBuilder setParameter(final String param, final String value) {
         if (this.queryParams == null) {
@@ -260,8 +288,9 @@ public class URIBuilder {
     }
 
     /**
-     * Sets URI fragment. The value is expected to be unescaped and may contain non ASCII
-     * characters.
+     * 设置URI的锚点
+     * @param fragment 锚点（可能包含非ASCII的未转义的预期值）（如：#bottom，参数不需包含#）
+     * @return
      */
     public URIBuilder setFragment(final String fragment) {
         this.fragment = fragment;
@@ -269,26 +298,50 @@ public class URIBuilder {
         return this;
     }
 
+    /**
+     * 获取协议方案
+     * @return 协议方案（如：http、https）
+     */
     public String getScheme() {
         return this.scheme;
     }
 
+    /**
+     * 获取用户信息
+     * @return 用户信息
+     */
     public String getUserInfo() {
         return this.userInfo;
     }
 
+    /**
+     * 获取主机HOST
+     * @return 主机HOST（如：www.baidu.com）
+     */
     public String getHost() {
         return this.host;
     }
 
+    /**
+     * 获取端口
+     * @return 端口（如：80）
+     */
     public int getPort() {
         return this.port;
     }
 
+    /**
+     * 获取路径
+     * @return 路径（如：/api/login）
+     */
     public String getPath() {
         return this.path;
     }
 
+    /**
+     * 获取参数集
+     * @return 参数集合{@link java.util.List}
+     */
     public List<NameValuePair> getQueryParams() {
         if (this.queryParams != null) {
             return new ArrayList<NameValuePair>(this.queryParams);
@@ -297,6 +350,10 @@ public class URIBuilder {
         }
     }
 
+    /**
+     * 获取锚点
+     * @return 锚点（如：#bottom，参数不需包含#）
+     */
     public String getFragment() {
         return this.fragment;
     }

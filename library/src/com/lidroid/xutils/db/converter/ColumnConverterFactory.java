@@ -6,15 +6,26 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 数据库列的数据转换器实例工厂
+ * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-11-4
  * Time: 下午10:27
+ * </pre>
+ * 
+ * @author wyouflf
  */
 public class ColumnConverterFactory {
 
     private ColumnConverterFactory() {
     }
 
+    /**
+     * 根据字段类型获取数据转换器
+     * @param columnType 字段类型{@link java.lang.Class}
+     * @return 数据库列的数据转换器{@link com.lidroid.xutils.db.converter.ColumnConverter}
+     */
     public static ColumnConverter getColumnConverter(Class columnType) {
         if (columnType_columnConverter_map.containsKey(columnType.getName())) {
             return columnType_columnConverter_map.get(columnType.getName());
@@ -31,6 +42,11 @@ public class ColumnConverterFactory {
         return null;
     }
 
+    /**
+     * 根据字段类型获取数据库中列的类型
+     * @param columnType 字段类型{@link java.lang.Class}
+     * @return 数据库中列的类型{@link com.lidroid.xutils.db.sqlite.ColumnDbType}
+     */
     public static ColumnDbType getDbColumnType(Class columnType) {
         ColumnConverter converter = getColumnConverter(columnType);
         if (converter != null) {
@@ -39,10 +55,20 @@ public class ColumnConverterFactory {
         return ColumnDbType.TEXT;
     }
 
+    /**
+     * 注册数据转换器
+     * @param columnType 字段类型{@link java.lang.Class}
+     * @param columnConverter 数据库列的数据转换器{@link com.lidroid.xutils.db.converter.ColumnConverter}
+     */
     public static void registerColumnConverter(Class columnType, ColumnConverter columnConverter) {
         columnType_columnConverter_map.put(columnType.getName(), columnConverter);
     }
 
+    /**
+     * 是否支持该类型的数据转换
+     * @param columnType 字段类型{@link java.lang.Class}
+     * @return 是否支持（支持：true）
+     */
     public static boolean isSupportColumnConverter(Class columnType) {
         if (columnType_columnConverter_map.containsKey(columnType.getName())) {
             return true;
