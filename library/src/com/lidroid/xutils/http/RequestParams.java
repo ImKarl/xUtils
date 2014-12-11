@@ -287,7 +287,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（上传文件）
-     * @param name 参数名
+     * @param key 参数名
      * @param file 要上传的文件{@link java.io.File}
      */
     public void addBodyParameter(String key, File file) {
@@ -298,7 +298,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（上传文件）
-     * @param name 参数名
+     * @param key 参数名
      * @param file 要上传的文件{@link java.io.File}
      * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
      */
@@ -310,7 +310,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（上传文件）
-     * @param name 参数名
+     * @param key 参数名
      * @param file 要上传的文件{@link java.io.File}
      * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
      * @param charset 文件编码
@@ -323,7 +323,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（上传文件）
-     * @param name 参数名
+     * @param key 参数名
      * @param file 要上传的文件{@link java.io.File}
      * @param fileName 文件名
      * @param mimeType 文件类型{@link com.lidroid.xutils.http.client.multipart.MIME}
@@ -337,7 +337,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（数据流）
-     * @param name 参数名
+     * @param key 参数名
      * @param stream 数据流{@link java.io.InputStream}
      * @param length 数据流的长度
      */
@@ -349,7 +349,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（数据流）
-     * @param name 参数名
+     * @param key 参数名
      * @param stream 数据流{@link java.io.InputStream}
      * @param length 数据流的长度
      * @param fileName 文件名
@@ -362,7 +362,7 @@ public class RequestParams {
     }
     /**
      * 添加POST参数（数据流）
-     * @param name 参数名
+     * @param key 参数名
      * @param stream 数据流{@link java.io.InputStream}
      * @param length 数据流的长度
      * @param fileName 文件名

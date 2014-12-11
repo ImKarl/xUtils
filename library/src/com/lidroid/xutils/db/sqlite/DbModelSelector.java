@@ -94,7 +94,7 @@ public class DbModelSelector {
     }
     /**
      * AND方式，添加WHERE条件
-     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @param where WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
      * @return 当前实例
      */
     public DbModelSelector and(WhereBuilder where) {
@@ -115,7 +115,7 @@ public class DbModelSelector {
     }
     /**
      * OR方式，添加WHERE条件
-     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @param where WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
      * @return 当前实例
      */
     public DbModelSelector or(WhereBuilder where) {

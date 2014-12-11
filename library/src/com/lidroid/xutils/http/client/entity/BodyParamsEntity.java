@@ -199,7 +199,7 @@ public class BodyParamsEntity extends AbstractHttpEntity implements Cloneable {
     /**
      * 克隆该参数实体
      * @return 新的实例
-     * @throws CloneNotSupportedException 不支持克隆操作{@link java.CloneNotSupportedException}
+     * @throws CloneNotSupportedException 不支持克隆操作{@link java.lang.CloneNotSupportedException}
      */
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

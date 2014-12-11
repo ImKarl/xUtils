@@ -34,7 +34,7 @@ public class BitmapDecoder {
 
     /**
      * 从资源文件解码图片
-     * @param res 资源{@link android.content.res.Resources
+     * @param res 资源{@link android.content.res.Resources}
      * @param resId 资源ID
      * @param maxSize 图片尺寸{@link com.lidroid.xutils.bitmap.core.BitmapSize}
      * @param config Bitmap参数设置{@link android.graphics.Bitmap.Config}
@@ -147,7 +147,7 @@ public class BitmapDecoder {
 
     /**
      * 从资源文件解码图片
-     * @param res 资源{@link android.content.res.Resources
+     * @param res 资源{@link android.content.res.Resources}
      * @param resId 资源ID
      * @return Bitmap位图{@link android.graphics.Bitmap}
      */

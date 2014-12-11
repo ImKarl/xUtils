@@ -85,7 +85,7 @@ public class Column {
 
     /**
      * 获取该数据库列的值，从实体类示例中获取数据
-     * @param entiry 实体类实例
+     * @param entity 实体类实例
      * @return 数据库中列的值
      */
     @SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class Column {
 
     /**
      * 获取该数据库列对应的实体类属性的值，从实体类实例中获取数据
-     * @param entiry 实体类实例
+     * @param entity 实体类实例
      * @return 数据库中列的值
      */
     public Object getFieldValue(Object entity) {

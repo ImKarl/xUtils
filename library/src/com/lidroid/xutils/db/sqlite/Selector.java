@@ -93,7 +93,7 @@ public class Selector {
     }
     /**
      * AND方式，添加WHERE条件
-     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @param where WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
      * @return 当前实例
      */
     public Selector and(WhereBuilder where) {
@@ -114,7 +114,7 @@ public class Selector {
     }
     /**
      * OR方式，添加WHERE条件
-     * @param whereBuilder WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
+     * @param where WHERE条件{@link com.lidroid.xutils.db.sqlite.WhereBuilder}
      * @return 当前实例
      */
     public Selector or(WhereBuilder where) {

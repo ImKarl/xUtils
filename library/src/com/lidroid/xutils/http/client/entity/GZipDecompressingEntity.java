@@ -29,7 +29,7 @@ public class GZipDecompressingEntity extends DecompressingEntity {
 
     /**
      * 构造GZip数据流解压器（包装请求参数实体）
-     * @param wrapped 非空的网络请求参数实体{@link org.apache.http.HttpEntity}
+     * @param entity 非空的网络请求参数实体{@link org.apache.http.HttpEntity}
      */
     public GZipDecompressingEntity(final HttpEntity entity) {
         super(entity);

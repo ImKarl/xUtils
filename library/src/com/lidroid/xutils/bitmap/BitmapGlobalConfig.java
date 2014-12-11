@@ -316,7 +316,7 @@ public class BitmapGlobalConfig {
 
     /**
      * 设置磁盘缓存是否可用
-     * @param memoryCacheEnabled 磁盘缓存是否可用（true:可用）
+     * @param diskCacheEnabled 磁盘缓存是否可用（true:可用）
      */
     public void setDiskCacheEnabled(boolean diskCacheEnabled) {
         this.diskCacheEnabled = diskCacheEnabled;

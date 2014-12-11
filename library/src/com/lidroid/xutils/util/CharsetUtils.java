@@ -40,7 +40,7 @@ public class CharsetUtils {
      * @param charset 字符编码
      * @param judgeCharsetLength 预估的字符长度
      * @return 编码转换后的字符串
-     * @see {@link java.nio.charset.Charset}
+     * @see java.nio.charset.Charset
      */
     public static String toCharset(final String str, final String charset, int judgeCharsetLength) {
         try {
@@ -57,7 +57,7 @@ public class CharsetUtils {
      * @param str 原始字符串
      * @param judgeCharsetLength 预估的字符长度
      * @return 字符编码
-     * @see {@link java.nio.charset.Charset}
+     * @see java.nio.charset.Charset
      */
     public static String getEncoding(final String str, int judgeCharsetLength) {
         String encode = CharsetUtils.DEFAULT_ENCODING_CHARSET;
@@ -76,7 +76,7 @@ public class CharsetUtils {
      * @param charset 字符编码
      * @param judgeCharsetLength 预估的字符长度
      * @return 是否该字符编码
-     * @see {@link java.nio.charset.Charset}
+     * @see java.nio.charset.Charset
      */
     public static boolean isCharset(final String str, final String charset, int judgeCharsetLength) {
         try {

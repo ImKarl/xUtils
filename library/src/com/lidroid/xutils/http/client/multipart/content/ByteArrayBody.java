@@ -71,7 +71,6 @@ public class ByteArrayBody extends AbstractContentBody {
      * </pre>
      * 
      * @param data 包含的数据内容（原文：The contents of the file contained in this part.）
-     * @param mimeType MIME类型（原文：The mime type of the file contained in this part.）
      * @param filename 文件名（原文：The name of the file contained in this part.）
      * @see com.lidroid.xutils.http.client.multipart.MIME
      */

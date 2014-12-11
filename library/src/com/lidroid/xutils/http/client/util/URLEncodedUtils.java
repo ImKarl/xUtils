@@ -45,7 +45,7 @@ public class URLEncodedUtils {
     /**
      * 如果Content-Type头信息是<code>application/x-www-form-urlencoded</code>，返回true
      * @param entity 网络请求参数实体{@link org.apache.http.HttpEntity}
-     * @return
+     * @return 默认：false
      */
     public static boolean isEncoded(final HttpEntity entity) {
         Header h = entity.getContentType();

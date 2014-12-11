@@ -40,16 +40,16 @@ public abstract class Downloader {
     private int defaultReadTimeout;
 
     /**
-     * 获取{@link andorid.content.Context}
-     * @return {@link andorid.content.Context}
+     * 获取{@link android.content.Context}
+     * @return {@link android.content.Context}
      */
     public Context getContext() {
         return context;
     }
 
     /**
-     * 设置{@link andorid.content.Context}
-     * @param context andorid.content.Context
+     * 设置{@link android.content.Context}
+     * @param context android.content.Context
      */
     public void setContext(Context context) {
         this.context = context;

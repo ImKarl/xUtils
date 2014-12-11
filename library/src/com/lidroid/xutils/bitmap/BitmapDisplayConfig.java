@@ -102,7 +102,7 @@ public class BitmapDisplayConfig {
 
     /**
      * 设置加载失败显示的图片
-     * @param loadingDrawable {@link android.graphics.drawable.Drawable}
+     * @param loadFailedDrawable {@link android.graphics.drawable.Drawable}
      */
     public void setLoadFailedDrawable(Drawable loadFailedDrawable) {
         this.loadFailedDrawable = loadFailedDrawable;

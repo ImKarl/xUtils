@@ -290,7 +290,7 @@ public class URIBuilder {
     /**
      * 设置URI的锚点
      * @param fragment 锚点（可能包含非ASCII的未转义的预期值）（如：#bottom，参数不需包含#）
-     * @return
+     * @return 当前实例
      */
     public URIBuilder setFragment(final String fragment) {
         this.fragment = fragment;

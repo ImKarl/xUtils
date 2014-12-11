@@ -253,7 +253,7 @@ public class ColumnUtils {
 
     /**
      * 根据主表关联列，获取对应的实体类属性类型
-     * @param foreignColumn 数据库表的主表关联列的描述{@link com.lidroid.xutils.db.table.Finder}
+     * @param finderColumn 数据库表的主表关联列的描述{@link com.lidroid.xutils.db.table.Finder}
      * @return 实体类属性类型{@link java.lang.Class}
      */
     public static Class<?> getFinderTargetEntityType(com.lidroid.xutils.db.table.Finder finderColumn) {

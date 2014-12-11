@@ -33,9 +33,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * LRU算法实现的磁盘缓存管理器
  * 
- * @param <K> 索引键
- * @param <V> 数据
- * 
  * <p>
  * A cache that uses a bounded amount of space on a filesystem. Each cache
  * entry has a string key and a fixed number of values. Values are byte sequences,

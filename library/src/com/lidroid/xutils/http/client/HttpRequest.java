@@ -105,7 +105,7 @@ public class HttpRequest extends HttpRequestBase implements HttpEntityEnclosingR
     }
     /**
      * 添加URL参数
-     * @param nameValuePair 参数集合
+     * @param nameValuePairs 参数集合
      * @return 当前实例
      */
     public HttpRequest addQueryStringParams(List<NameValuePair> nameValuePairs) {
