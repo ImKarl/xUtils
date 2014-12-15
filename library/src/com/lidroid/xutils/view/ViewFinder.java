@@ -10,9 +10,11 @@ import android.view.View;
 /**
  * 控件{@link android.view.View}查找辅助工具
  * 
+ * <pre>
  * Author: wyouflf
  * Date: 13-9-9
  * Time: 下午12:29
+ * </pre>
  */
 public class ViewFinder {
 
