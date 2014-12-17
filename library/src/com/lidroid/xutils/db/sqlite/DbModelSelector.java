@@ -186,7 +186,7 @@ public class DbModelSelector {
     /**
      * 设置ORDER排序条件
      * @param columnName 列名
-     * @param desc 是否降序排序
+     * @param desc 是否降序排序（true:降序，false:升序）
      * @return 当前实例
      */
     public DbModelSelector orderBy(String columnName, boolean desc) {
